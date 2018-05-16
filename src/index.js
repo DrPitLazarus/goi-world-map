@@ -1,10 +1,9 @@
 import 'konva';
+import vars from './vars';
 import mapImageUrl from '../assets/map.png';
 import initTerritories from './territories';
 
-let width = window.innerWidth,
-    height = window.innerHeight,
-    scale = 1;
+const { width, height, scale, mapOffsetY } = vars;
 
 let stage = new Konva.Stage({
     container: 'main',
@@ -16,6 +15,7 @@ let layer = new Konva.Layer();
 let textLayer = new Konva.Layer();
 
 let group = new Konva.Group({
+    offsetY: mapOffsetY,
     draggable: true,
     dragBoundFunc(pos) {
         let x = pos.x,
@@ -26,30 +26,25 @@ let group = new Konva.Group({
         if (width - Math.floor(imageObj.width * scale) > pos.x) {
             x = width - Math.floor(imageObj.width * scale);
         }
-        if (pos.y > 0) {
-            y = 0;
+        if (pos.y > 0 + mapOffsetY) {
+            y = 0 + mapOffsetY;
         }
-        if (height - Math.floor(imageObj.height * scale) > pos.y) {
-            y = height - Math.floor(imageObj.height * scale);
+        if (height + mapOffsetY - Math.floor(imageObj.height * scale) > pos.y) {
+            y = height + mapOffsetY - Math.floor(imageObj.height * scale);
         }
         return { x, y }
     }
 });
 
 let text = new Konva.Text({
-    x: 0,
-    y: 0,
-    fontFamily: 'Arial',
     fontSize: 22,
     text: 'hover over a territory',
-    fill: 'teal',
-    // width: 300
+    fill: 'teal'
 });
 
 let textXY = new Konva.Text({
     x: width - 100,
-    width,
-    fontFamily: 'Arial',
+    width: width,
     fontSize: 18,
     text: '',
     fill: 'teal'
@@ -64,14 +59,13 @@ imageObj.onload = function () {
         width: 2048 * scale,
         height: 2048 * scale
     });
-
     group.add(img);
     img.moveToBottom();
     layer.draw();
 };
 imageObj.src = mapImageUrl;
 
-initTerritories(scale, group, function (newMsg) {
+initTerritories(group, function (newMsg) {
     text.setText(newMsg);
     textLayer.draw();
 });
@@ -86,6 +80,8 @@ stage.add(textLayer);
 // Show xy coords on image 
 stage.on('mousemove', function () {
     let pos = stage.getPointerPosition() || { x: 0, y: 0 };
-    textXY.setText(`x: ${(pos.x - group.getAbsolutePosition().x)}\ny: ${pos.y - group.getAbsolutePosition().y}`);
+    let x = pos.x - group.getAbsolutePosition().x,
+        y = pos.y - group.getAbsolutePosition().y + mapOffsetY;
+    textXY.setText(`x: ${x}\ny: ${y}`);
     textLayer.draw();
 })

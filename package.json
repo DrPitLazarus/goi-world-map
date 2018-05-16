@@ -1,6 +1,7 @@
 {
   "name": "goi-world-map",
   "version": "1.0.0",
+  "author": "Dr. Pit Lazarus <drpitlazarus@gmail.com>",
   "main": "index.js",
   "license": "MIT",
   "scripts": {

@@ -3,12 +3,16 @@
 An online version of GOI's world map powered by Konva.js. Currently a WIP.
 
 ## Dev
+Install dependencies
+```bash
+$ yarn
+# or
+$ npm install
+```
 
-To start, run with yarn
+Start
 ```bash
 $ yarn run dev
-```
-or with npm
-```bash
+# or
 $ npm run dev
 ```

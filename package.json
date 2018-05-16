@@ -9,5 +9,8 @@
   },
   "dependencies": {
     "konva": "^2.1.2"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.8.1"
   }
 }

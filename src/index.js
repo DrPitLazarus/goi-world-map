@@ -1,7 +1,8 @@
-import 'konva';
+import Konva from 'konva';
 import EventBus from 'eventbusjs';
 import vars from './vars';
 import mapImageUrl from '../assets/map.png';
+import mapWallImageUrl from '../assets/map_wall.png';
 import initTerritories from './territories';
 
 const { width, height, scale, mapOffsetY } = vars;
@@ -71,6 +72,20 @@ imageObj.onload = function () {
 };
 imageObj.src = mapImageUrl;
 
+let mapWallImage = new Image();
+mapWallImage.onload = function() {
+    let img = new Konva.Image({
+        image: mapWallImage,
+        width: 305,
+        height: 305,
+        x: 702,
+        y: 885
+    });
+    group.add(img);
+    layer.draw();
+}
+mapWallImage.src = mapWallImageUrl;
+
 initTerritories(group, function (newMsg) {
     text.setText(newMsg);
     textLayer.draw();
@@ -90,10 +105,10 @@ stage.on('mousemove', function () {
         y = pos.y - group.getAbsolutePosition().y + mapOffsetY;
     textXY.setText(`x: ${x}\ny: ${y}`);
     textLayer.draw();
-})
+});
 
 if (module.hot) {
     module.hot.accept(() => {
         location.reload();
-    })
+    });
 }

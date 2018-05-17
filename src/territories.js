@@ -1,6 +1,7 @@
+import Konva from 'konva';
 import vars, { factions } from './vars';
 import { layer, eventBus } from './index';
-
+import loadResources from './load_resources';
 
 const { scale } = vars;
 
@@ -18,18 +19,50 @@ export default function initTerritories(group, writeMessage) {
             radius: 6,
             fill: 'white'
         });
-        let nodeResources = new Konva.Circle({
+        let nodeResourcesGroup = new Konva.Group({
             x: data[node].capitol[0] * scale,
             y: data[node].capitol[1] * scale - 25,
-            fill: 'orange',
-            radius: 12,
             visible: false
         });
+        let nodeResourcesCircle = new Konva.Circle({
+            fill: 'orange',
+            radius: 16
+        });
+        let nodeResourcesTextRect = new Konva.Rect({
+            fill: '#1b1b13',
+            width: 40,
+            height: 24,
+            offsetY: 12,
+            cornerRadius: 10
+        });
+        let nodeResourcesText = new Konva.Text({
+            text: data[node].resourceValue,
+            fill: 'white',
+            fontSize: 16,
+            x: 20,
+            y: -8
+        });
+        let nodeResourcesImage = new Image();
+        nodeResourcesImage.onload = function() {
+            let img = new Konva.Image({
+                image: nodeResourcesImage,
+                width: 24,
+                height: 24,
+                offsetX: 12,
+                offsetY: 12
+            });
+            nodeResourcesGroup.add(img);
+        }
+        nodeResourcesImage.src = loadResources[data[node].resource];
         group.add(nodeLine);
         group.add(nodeCaptiol);
-        group.add(nodeResources);
+        nodeResourcesGroup.add(nodeResourcesCircle);
+        nodeResourcesGroup.add(nodeResourcesTextRect);
+        nodeResourcesGroup.add(nodeResourcesText)
+        nodeResourcesTextRect.moveToBottom();
+        group.add(nodeResourcesGroup);
         eventBus.addEventListener("viewSelectChange", e => {
-            nodeResources.visible(e.target == 'resources' ? true : false);
+            nodeResourcesGroup.visible(e.target == 'resources' ? true : false);
             layer.draw();
         });
         if (data[node].contested) {
@@ -114,7 +147,7 @@ export const data = {
         capitol: [549, 535],
         faction: 'anglea',
         name: 'Utentana',
-        resource: 'wood',
+        resource: 'lumber',
         resourceValue: 4
     },
     cusichaca: {
@@ -154,7 +187,7 @@ export const data = {
         capitol: [677, 712],
         faction: 'baron',
         name: 'Paritus',
-        resource: 'wood',
+        resource: 'lumber',
         resourceValue: 4
     },
     hanat: {

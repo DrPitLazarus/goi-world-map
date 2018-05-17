@@ -1,4 +1,6 @@
 import vars, { factions } from './vars';
+import { layer, eventBus } from './index';
+
 
 const { scale } = vars;
 
@@ -12,12 +14,24 @@ export default function initTerritories(group, writeMessage) {
         });
         let nodeCaptiol = new Konva.Circle({
             x: data[node].capitol[0] * scale,
-            y: data[node].capitol[1] * scale,
+            y: data[node].capitol[1] * scale, 
             radius: 6,
             fill: 'white'
         });
+        let nodeResources = new Konva.Circle({
+            x: data[node].capitol[0] * scale,
+            y: data[node].capitol[1] * scale - 25,
+            fill: 'orange',
+            radius: 12,
+            visible: false
+        });
         group.add(nodeLine);
         group.add(nodeCaptiol);
+        group.add(nodeResources);
+        eventBus.addEventListener("viewSelectChange", e => {
+            nodeResources.visible(e.target == 'resources' ? true : false);
+            layer.draw();
+        });
         if (data[node].contested) {
             let { attacker, attackerGoal, attackerProgress, defender, defenderGoal, defenderProgress } = data[node].contested;
             let nodeBattle = new Konva.Group({
@@ -47,8 +61,12 @@ export default function initTerritories(group, writeMessage) {
             });
             nodeBattle.add(nodeBattleBase);
             nodeBattle.add(nodeBattleAttacker);
-            nodeBattle.add(nodeBattleDefender);
+            nodeBattle.add(nodeBattleDefender); 
             group.add(nodeBattle);
+            eventBus.addEventListener("viewSelectChange", e => {
+                nodeBattle.visible(e.target == 'battles' ? true : false);
+                layer.draw();
+            });
         }
         nodeLine.on('mouseover', function () {
             let msg = data[node].name;

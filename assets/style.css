@@ -2,3 +2,10 @@ body {
     margin: 0;
     overflow: hidden;
 }
+#viewSelectContainer {
+    position: absolute;
+    top: 0;
+    left: 220px;
+    z-index: 1000;
+    color: #ccc;
+}

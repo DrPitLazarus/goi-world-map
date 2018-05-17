@@ -8,6 +8,7 @@
     "dev": "parcel index.html"
   },
   "dependencies": {
+    "eventbusjs": "^0.2.0",
     "konva": "^2.1.2"
   },
   "devDependencies": {

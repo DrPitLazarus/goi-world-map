@@ -1,9 +1,15 @@
 import 'konva';
+import EventBus from 'eventbusjs';
 import vars from './vars';
 import mapImageUrl from '../assets/map.png';
 import initTerritories from './territories';
 
 const { width, height, scale, mapOffsetY } = vars;
+
+export let eventBus = EventBus;
+document.querySelector('#viewSelect').addEventListener('change', e => {
+    eventBus.dispatch("viewSelectChange", e.target.value);
+})
 
 let stage = new Konva.Stage({
     container: 'main',
@@ -11,7 +17,7 @@ let stage = new Konva.Stage({
     height
 });
 
-let layer = new Konva.Layer();
+export let layer = new Konva.Layer();
 let textLayer = new Konva.Layer();
 
 let group = new Konva.Group({
@@ -85,3 +91,9 @@ stage.on('mousemove', function () {
     textXY.setText(`x: ${x}\ny: ${y}`);
     textLayer.draw();
 })
+
+if (module.hot) {
+    module.hot.accept(() => {
+        location.reload();
+    })
+}

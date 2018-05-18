@@ -12,7 +12,7 @@ document.querySelector('#viewSelect').addEventListener('change', e => {
     eventBus.dispatch("viewSelectChange", e.target.value);
 })
 
-let stage = new Konva.Stage({
+export let stage = new Konva.Stage({
     container: 'main',
     width,
     height

@@ -406,5 +406,95 @@ export const data = {
         position: [429, 887],
         resource: 'water',
         resourceValue: 3
+    },
+    saltpan: {
+        boundaries: territoryBoundaries[15],
+        capitol: [576, 1039],
+        faction: 'yesha',
+        name: "Saltpan",
+        position: [532, 977],
+        resource: 'medicine',
+        resourceValue: 4
+    },
+    oblivionPass: {
+        boundaries: territoryBoundaries[64],
+        capitol: [685, 1022],
+        faction: 'anglea',
+        name: "Oblivion Pass",
+        position: [610, 983],
+        resource: 'water',
+        resourceValue: 3
+    },
+    garrow: {
+        boundaries: territoryBoundaries[27],
+        capitol: [747, 1036],
+        faction: 'anglea',
+        name: "Garrow",
+        position: [716, 1006],
+        resource: 'water',
+        resourceValue: 3
+    },
+    sunder: {
+        boundaries: territoryBoundaries[18],
+        capitol: [871, 1029],
+        faction: 'merchant',
+        name: "Sunder",
+        position: [818, 973],
+        resource: 'mine',
+        resourceValue: 3
+    },
+    lookout: {
+        boundaries: territoryBoundaries[7],
+        capitol: [1021, 1032],
+        faction: 'merchant',
+        name: "Lookout",
+        position: [960, 967],
+        resource: 'farm',
+        resourceValue: 2
+    },
+    ballast: {
+        boundaries: territoryBoundaries[11],
+        capitol: [1152, 1070],
+        faction: 'merchant',
+        name: "Ballast",
+        position: [1057, 994],
+        resource: 'mine',
+        resourceValue: 4
+    },
+    troydon: {
+        boundaries: territoryBoundaries[14],
+        capitol: [1218, 1162],
+        faction: 'merchant',
+        name: "Troydon",
+        position: [1021, 1072],
+        resource: 'lumber',
+        resourceValue: 2
+    },
+    boomtown: {
+        boundaries: territoryBoundaries[10],
+        capitol: [1008, 1088],
+        faction: 'merchant',
+        name: "Boomtown",
+        position: [921, 1047],
+        resource: 'mine',
+        resourceValue: 3
+    },
+    jacksonHole: {
+        boundaries: territoryBoundaries[20],
+        capitol: [936, 1124],
+        faction: 'merchant',
+        name: "Jackson Hole",
+        position: [854, 1090],
+        resource: 'farm',
+        resourceValue: 4
+    },
+    albys: {
+        boundaries: territoryBoundaries[46],
+        capitol: [908, 1279],
+        faction: 'merchant',
+        name: "Albys",
+        position: [764, 1118],
+        resource: 'farm',
+        resourceValue: 4
     }
 }

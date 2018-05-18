@@ -29,6 +29,6 @@ export const factions = {
     },
     yesha: {
         name: 'Yesha Empire',
-        color: '#664d00'
+        color: '#66160d'
     }
 }

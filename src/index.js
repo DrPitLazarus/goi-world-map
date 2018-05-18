@@ -79,7 +79,8 @@ mapWallImage.onload = function() {
         width: 305,
         height: 305,
         x: 702,
-        y: 885
+        y: 885,
+        listening: false
     });
     group.add(img);
     layer.draw();

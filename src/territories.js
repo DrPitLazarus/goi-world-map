@@ -10,7 +10,7 @@ export default function initTerritories(group, writeMessage) {
     for (let node in data) {
         let nodeLine = new Konva.Line({
             points: data[node].boundaries.map(val => val * 0.78),
-            fill: factions[data[node].faction].color,
+            fill: data[node].faction ? factions[data[node].faction].color : 'gray',
             closed: true,
             opacity: 0.5,
             x: data[node].position[0],
@@ -47,7 +47,7 @@ export default function initTerritories(group, writeMessage) {
             cornerRadius: 10
         });
         let nodeResourcesText = new Konva.Text({
-            text: data[node].resourceValue.toString(),
+            text: data[node].resourceValue ? data[node].resourceValue.toString() : '',
             fill: 'white',
             fontSize: 16,
             x: 20,
@@ -64,7 +64,7 @@ export default function initTerritories(group, writeMessage) {
             });
             nodeResourcesGroup.add(img);
         }
-        nodeResourcesImage.src = loadResources[data[node].resource];
+        nodeResourcesImage.src = data[node].resource ? loadResources[data[node].resource] : loadResources['water'];
         group.add(nodeLine);
         group.add(nodeCaptiol);
         nodeResourcesGroup.add(nodeResourcesCircle);
@@ -177,14 +177,14 @@ export const data = {
     hongshiCoast: {
         boundaries: territoryBoundaries[3],
         capitol: [419, 777],
-        contested: {
-            attacker: "yesha",
-            attackerProgress: 17000,
-            attackerGoal: 282000,
-            defender: "anglea",
-            defenderProgress: 234000,
-            defenderGoal: 372000
-        },
+        // contested: {
+        //     attacker: "yesha",
+        //     attackerProgress: 17000,
+        //     attackerGoal: 282000,
+        //     defender: "anglea",
+        //     defenderProgress: 234000,
+        //     defenderGoal: 372000
+        // },
         faction: 'anglea',
         name: 'Hongshi Coast',
         position: [299, 759],
@@ -496,5 +496,245 @@ export const data = {
         position: [764, 1118],
         resource: 'farm',
         resourceValue: 4
+    },
+    orrington: {
+        boundaries: territoryBoundaries[72],
+        capitol: [596, 1147],
+        faction: 'arashi',
+        name: "Orrington",
+        position: [541, 1051],
+        resource: 'lumber',
+        resourceValue: 3
+    },
+    sanctuary: {
+        boundaries: territoryBoundaries[67],
+        capitol: [486, 1172],
+        faction: 'arashi',
+        name: "Sanctuary",
+        position: [432, 1054],
+        resource: 'water',
+        resourceValue: 3
+    },
+    yaoLingPass: {
+        boundaries: territoryBoundaries[56],
+        capitol: [359, 1195],
+        faction: 'arashi',
+        name: "Yao Ling Pass",
+        position: [264, 1093],
+        resource: 'oil',
+        resourceValue: 3
+    },
+    luTower: {
+        boundaries: territoryBoundaries[35],
+        capitol: [235, 1154],
+        faction: 'arashi',
+        name: "Lu Tower",
+        position: [175, 1090],
+        resource: 'water',
+        resourceValue: 3
+    },
+    baiHuaHills: {
+        boundaries: territoryBoundaries[1],
+        capitol: [260, 1236],
+        faction: 'arashi',
+        name: "Bai Hua Hills",
+        position: [178, 1219],
+        resource: 'mine',
+        resourceValue: 2
+    },
+    dragontown: {
+        boundaries: territoryBoundaries[39],
+        capitol: [466, 1266],
+        faction: 'arashi',
+        name: "Dragontown",
+        position: [292, 1211],
+        resource: 'medicine',
+        resourceValue: 3
+    },
+    faron: {
+        boundaries: territoryBoundaries[69],
+        capitol: [645, 1250],
+        faction: 'arashi',
+        name: "Faron",
+        position: [482, 1212],
+        resource: 'farm',
+        resourceValue: 3
+    },
+    landmark: {
+        boundaries: territoryBoundaries[51],
+        capitol: [578, 1443],
+        faction: 'arashi',
+        name: "Landmark",
+        position: [447, 1380],
+        resource: 'farm',
+        resourceValue: 4
+    },
+    naufrage: {
+        boundaries: territoryBoundaries[5],
+        capitol: [430, 1370],
+        faction: 'arashi',
+        name: "Naufrage",
+        position: [355, 1336],
+        resource: 'water',
+        resourceValue: 3
+    },
+    sabbia: {
+        boundaries: territoryBoundaries[26],
+        capitol: [348, 1356],
+        faction: 'arashi',
+        name: "Sabbia",
+        position: [285, 1283],
+        resource: 'oil',
+        resourceValue: 2
+    },
+    flyaway: {
+        boundaries: territoryBoundaries[45],
+        capitol: [211, 1344],
+        faction: 'arashi',
+        name: "Flyaway",
+        position: [182, 1273],
+        resource: 'water',
+        resourceValue: 3
+    },
+    canon: {
+        boundaries: territoryBoundaries[13],
+        capitol: [306, 1464],
+        faction: 'arashi',
+        name: "Canon",
+        position: [239, 1376],
+        resource: 'medicine',
+        resourceValue: 3
+    },
+    alleron: {
+        boundaries: territoryBoundaries[70],
+        capitol: [382, 1543],
+        faction: 'arashi',
+        name: "Alleron",
+        position: [286, 1420],
+        resource: 'farm',
+        resourceValue: 1
+    },
+    caldera: {
+        boundaries: territoryBoundaries[37],
+        capitol: [578, 1566],
+        faction: 'arashi',
+        name: "Caldera",
+        position: [453, 1514],
+        resource: 'lumber',
+        resourceValue: 3
+    },
+    kire: {
+        boundaries: territoryBoundaries[52],
+        capitol: [743, 1586],
+        name: "Kire",
+        position: [625, 1459]
+    },
+    sabakumura: {
+        boundaries: territoryBoundaries[24],
+        capitol: [885, 1563],
+        name: "Sabakumura",
+        position: [786, 1523]
+    },
+    selogorod: {
+        boundaries: territoryBoundaries[30],
+        capitol: [1020, 1557],
+        name: "Selogorod",
+        position: [913, 1519]
+    },
+    orlevsela: {//FIX
+        boundaries: territoryBoundaries[8],
+        capitol: [1029, 1486],
+        name: "Orlevsela",
+        position: [869, 1437]
+    },
+    starostrog: {
+        boundaries: territoryBoundaries[4],
+        capitol: [1103, 1417],
+        name: "Starostrog",
+        position: [1038, 1414]
+    },
+    vyshtorg: {
+        boundaries: territoryBoundaries[54],
+        capitol: [1142, 1584],
+        name: "Vyshtorg",
+        position: [1046, 1471]
+    },
+    vamaRea: {
+        boundaries: territoryBoundaries[66],
+        capitol: [1225, 1368],
+        name: "Vama Rea",
+        position: [1163, 1321]
+    },
+    morMare: {
+        boundaries: territoryBoundaries[59],
+        capitol: [1391, 1496],
+        name: "Mor Mare",
+        position: [1233, 1382]
+    },
+    andelata: {
+        boundaries: territoryBoundaries[42],
+        capitol: [1590, 1367],
+        name: "Andelata",
+        position: [1467, 1325]
+    },
+    lirodunum: {
+        boundaries: territoryBoundaries[25],
+        capitol: [1638, 1295],
+        name: "Lirodunum",
+        position: [1599, 1256]
+    },
+    beldusios: {
+        boundaries: territoryBoundaries[32],
+        capitol: [1781, 1240],
+        name: "Beldusios",
+        position: [1687, 1235]
+    },
+    allonia: {
+        boundaries: territoryBoundaries[53],
+        capitol: [1761, 1078],
+        name: "Allonia",
+        position: [1660, 995]
+    },
+    lutessa: {
+        boundaries: territoryBoundaries[57],
+        capitol: [1633, 1184],
+        name: "Lutessa",
+        position: [1568, 1014]
+    },
+    averna: {
+        boundaries: territoryBoundaries[48],
+        capitol: [1602, 989],
+        name: "Averna",
+        position: [1561, 876]
+    },
+    anthos: {
+        boundaries: territoryBoundaries[65],
+        capitol: [1579, 878],
+        name: "Anthos",
+        position: [1535, 736]
+    },
+    lascus: {
+        boundaries: territoryBoundaries[63],
+        capitol: [1487, 1002],
+        name: "Lascus",
+        position: [1410, 820]
+    },
+    itonia: {
+        boundaries: territoryBoundaries[74],
+        capitol: [1409, 897],
+        name: "Itonia",
+        position: [1399, 630]
+    },
+    serpentsPoint: {
+        boundaries: territoryBoundaries[6],
+        capitol: [1326, 770],
+        name: "Serpent's Point",
+        position: [1300, 711]
+    },
+    blackcliff: {
+        boundaries: territoryBoundaries[2],
+        capitol: [1284, 820],
+        name: "Blackcliff",
+        position: [1226, 775]
     }
 }

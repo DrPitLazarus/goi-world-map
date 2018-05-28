@@ -66,6 +66,7 @@ imageObj.onload = function () {
         width: 2048 * scale,
         height: 2048 * scale
     });
+    img.transformsEnabled('position');
     group.add(img);
     img.moveToBottom();
     layer.draw();
@@ -73,7 +74,7 @@ imageObj.onload = function () {
 imageObj.src = mapImageUrl;
 
 let mapWallImage = new Image();
-mapWallImage.onload = function() {
+mapWallImage.onload = function () {
     let img = new Konva.Image({
         image: mapWallImage,
         width: 305,
@@ -82,6 +83,7 @@ mapWallImage.onload = function() {
         y: 885,
         listening: false
     });
+    img.transformsEnabled('position');
     group.add(img);
     layer.draw();
 }
@@ -100,16 +102,18 @@ stage.add(layer);
 stage.add(textLayer);
 
 // Show xy coords on image 
-stage.on('mousemove', function () {
-    let pos = stage.getPointerPosition() || { x: 0, y: 0 };
-    let x = pos.x - group.getAbsolutePosition().x,
-        y = pos.y - group.getAbsolutePosition().y + mapOffsetY;
-    textXY.setText(`x: ${x}\ny: ${y}`);
-    textLayer.draw();
-});
+if (vars.showPointerCoords) {
+    stage.on('mousemove', function () {
+        let pos = stage.getPointerPosition() || { x: 0, y: 0 };
+        let x = pos.x - group.getAbsolutePosition().x,
+            y = pos.y - group.getAbsolutePosition().y + mapOffsetY;
+        textXY.setText(`x: ${x}\ny: ${y}`);
+        textLayer.draw();
+    });
+}
 
 if (module.hot) {
     module.hot.accept(() => {
-        location.reload();
+        window.location.reload();
     });
 }

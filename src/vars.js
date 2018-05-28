@@ -3,7 +3,8 @@ export default {
     height: window.innerHeight,
     scale: 1,
     mapOffsetY: 250,
-    enableDraggableTerritories: false
+    enableDraggableTerritories: false,
+    showPointerCoords: false
 }
 
 export const factions = {

@@ -17,6 +17,7 @@ export default function initTerritories(group, writeMessage) {
             y: data[node].position[1],
             draggable: vars.enableDraggableTerritories
         });
+        nodeLine.transformsEnabled('position');
         if (vars.enableDraggableTerritories) {
             nodeLine.on('dragend', e => {
                 let x = nodeLine.getAbsolutePosition().x - group.getAbsolutePosition().x,
@@ -28,40 +29,52 @@ export default function initTerritories(group, writeMessage) {
             x: data[node].capitol[0] * scale,
             y: data[node].capitol[1] * scale,
             radius: 6,
-            fill: 'white'
+            fill: 'white',
+            listening: false
         });
+        nodeCaptiol.transformsEnabled('position');
         let nodeResourcesGroup = new Konva.Group({
             x: data[node].capitol[0] * scale,
             y: data[node].capitol[1] * scale - 25,
-            visible: false
+            visible: false,
+            listening: false
         });
+        nodeResourcesGroup.transformsEnabled('position');
         let nodeResourcesCircle = new Konva.Circle({
             fill: 'orange',
-            radius: 16
+            radius: 16,
+            listening: false
         });
+        nodeResourcesCircle.transformsEnabled('position');
         let nodeResourcesTextRect = new Konva.Rect({
             fill: '#1b1b13',
             width: 40,
             height: 24,
-            offsetY: 12,
-            cornerRadius: 10
+            y: -12,
+            cornerRadius: 10,
+            listening: false
         });
+        nodeResourcesTextRect.transformsEnabled('position');
         let nodeResourcesText = new Konva.Text({
             text: data[node].resourceValue ? data[node].resourceValue.toString() : '',
             fill: 'white',
             fontSize: 16,
             x: 20,
-            y: -8
+            y: -8,
+            listening: false
         });
+        nodeResourcesText.transformsEnabled('position');
         let nodeResourcesImage = new Image();
         nodeResourcesImage.onload = function () {
             let img = new Konva.Image({
                 image: nodeResourcesImage,
                 width: 24,
                 height: 24,
-                offsetX: 12,
-                offsetY: 12
+                x: -12,
+                y: -12,
+                listening: false
             });
+            img.transformsEnabled('position');
             nodeResourcesGroup.add(img);
         }
         nodeResourcesImage.src = data[node].resource ? loadResources[data[node].resource] : loadResources['water'];
@@ -74,7 +87,7 @@ export default function initTerritories(group, writeMessage) {
         group.add(nodeResourcesGroup);
         eventBus.addEventListener("viewSelectChange", e => {
             nodeResourcesGroup.visible(e.target == 'resources' ? true : false);
-            layer.draw();
+            layer.batchDraw();
         });
         if (data[node].contested) {
             let { attacker, attackerGoal, attackerProgress, defender, defenderGoal, defenderProgress } = data[node].contested;
@@ -109,7 +122,7 @@ export default function initTerritories(group, writeMessage) {
             group.add(nodeBattle);
             eventBus.addEventListener("viewSelectChange", e => {
                 nodeBattle.visible(e.target == 'battles' ? true : false);
-                layer.draw();
+                layer.batchDraw();
             });
         }
         nodeLine.on('mouseover', function () {

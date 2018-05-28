@@ -11,8 +11,5 @@
   "dependencies": {
     "eventbusjs": "^0.2.0",
     "konva": "^2.1.2"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.8.1"
   }
 }

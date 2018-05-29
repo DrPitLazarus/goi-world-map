@@ -9,3 +9,7 @@ eventbusjs@^0.2.0:
 konva@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/konva/-/konva-2.1.2.tgz#ba2e98e5ab3740b351f3742c74bcb86b7242df8c"
+
+lodash@^4.17.10:
+  version "4.17.10"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"

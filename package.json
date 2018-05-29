@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "eventbusjs": "^0.2.0",
-    "konva": "^2.1.2"
-  }
+    "konva": "^2.1.2",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {}
 }

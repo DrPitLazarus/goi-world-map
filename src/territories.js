@@ -1,11 +1,10 @@
 import Konva from 'konva'
+import _ from 'lodash'
 import vars, { factions } from './vars'
 import { stage, layer, group, eventBus } from './index'
 import loadResources from './load_resources'
-import data from './territory_data'
 
-
-export default function initTerritories(writeMessage) {
+export default function initTerritories(data, writeMessage) {
     for (let node in data) {
         let nodeLine = new Konva.Line({
             points: data[node].boundaries.map(val => val * 0.78),

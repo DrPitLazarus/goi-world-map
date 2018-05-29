@@ -2,9 +2,10 @@ import Konva from 'konva'
 import { layer, group, eventBus } from './index'
 import { factions } from './vars'
 import data from './territory_data'
+import { factions as factionImages } from './image_assets'
 
 
-export default function initBattles() {
+export default function initBattles(data) {
     for (let node in data) {
         if (!data[node].contested) continue;
         let { attacker, attackerGoal, attackerProgress, defender, defenderGoal, defenderProgress } = data[node].contested;
@@ -34,6 +35,36 @@ export default function initBattles() {
             height: 6,
             fill: factions[defender].color
         });
+        let battleAttackerImage = new Image();
+        battleAttackerImage.onload = function () {
+            let img = new Konva.Image({
+                image: battleAttackerImage,
+                width: 36,
+                height: 36,
+                x: -6,
+                y: 24,
+                listening: false
+            });
+            img.transformsEnabled('position');
+            battleGroup.add(img);
+            layer.batchDraw();
+        }
+        battleAttackerImage.src = data[node].contested.attacker ? factionImages[data[node].contested.attacker] : '';
+        let battleDefenderImage = new Image();
+        battleDefenderImage.onload = function () {
+            let img = new Konva.Image({
+                image: battleDefenderImage,
+                width: 36,
+                height: 36,
+                x: 30,
+                y: 24,
+                listening: false
+            });
+            img.transformsEnabled('position');
+            battleGroup.add(img);
+            layer.batchDraw();
+        }
+        battleDefenderImage.src = data[node].contested.defender ? factionImages[data[node].contested.defender] : '';
         battleGroup.add(battleBase);
         battleGroup.add(battleAttacker);
         battleGroup.add(battleDefender);
@@ -47,5 +78,5 @@ export default function initBattles() {
 }
 
 function createFactionImages() {
-    
+
 }

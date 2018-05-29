@@ -1,11 +1,13 @@
 import Konva from 'konva'
 import EventBus from 'eventbusjs'
+import _ from 'lodash'
 import vars from './vars'
 import mapImageUrl from '../assets/map.png'
 import mapWallImageUrl from '../assets/map_wall.png'
 import initTerritories from './territories'
 import initResources from './resources'
 import initBattles from './battles'
+import rawData from './territory_data'
 
 const { width, height, scale, mapOffsetY } = vars;
 
@@ -48,7 +50,7 @@ export let group = new Konva.Group({
 let text = new Konva.Text({
     fontSize: 22,
     text: 'hover over a territory',
-    fill: 'teal'
+    fill: 'white'
 });
 
 let textXY = new Konva.Text({
@@ -83,21 +85,31 @@ mapWallImage.onload = function () {
         height: 305,
         x: 702,
         y: 885,
-        listening: false
+        listening: false,
+        name: 'mapWall'
     });
     img.transformsEnabled('position');
     group.add(img);
     layer.batchDraw();
+    layer.find('.mapWall').moveToTop();
     layer.find('.resourcesGroup').forEach(node => node.moveToTop());
 }
 mapWallImage.src = mapWallImageUrl;
 
-initTerritories(function (newMsg) {
-    text.setText(newMsg);
-    textLayer.batchDraw();
-});
-initBattles();
-initResources();
+fetch('https://drpitlazar.us/goi/sample-map.php')
+    .then(r => r.json())
+    .then(function (r) {
+        let data = _.merge(r, rawData);
+        initTerritories(data, function (newMsg) {
+            text.setText(newMsg);
+            textLayer.batchDraw();
+        });
+        initBattles(data);
+        initResources(data);
+        layer.find('.mapWall').moveToTop();
+        layer.find('.resourcesGroup').forEach(node => node.moveToTop());
+    });
+
 
 layer.add(group);
 

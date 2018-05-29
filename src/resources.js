@@ -1,11 +1,10 @@
 import Konva from 'konva'
 import { layer, group, eventBus } from './index'
 import vars from './vars'
-import data from './territory_data'
-import loadResources from './load_resources'
+import { resources } from './image_assets'
 
 
-export default function initResources() {
+export default function initResources(data) {
     for (let node in data) {
         let resourcesGroup = new Konva.Group({
             x: data[node].capitol[0] * vars.scale,
@@ -52,7 +51,7 @@ export default function initResources() {
             img.transformsEnabled('position');
             resourcesGroup.add(img);
         }
-        resourcesImage.src = data[node].resource ? loadResources[data[node].resource] : loadResources['water'];
+        resourcesImage.src = data[node].resource ? resources[data[node].resource] : resources['water'];
         resourcesGroup.add(resourcesCircle);
         resourcesGroup.add(resourcesTextRect);
         resourcesGroup.add(resourcesText)

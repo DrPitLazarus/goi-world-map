@@ -1,9 +1,11 @@
-import Konva from 'konva';
-import EventBus from 'eventbusjs';
-import vars from './vars';
-import mapImageUrl from '../assets/map.png';
-import mapWallImageUrl from '../assets/map_wall.png';
-import initTerritories from './territories';
+import Konva from 'konva'
+import EventBus from 'eventbusjs'
+import vars from './vars'
+import mapImageUrl from '../assets/map.png'
+import mapWallImageUrl from '../assets/map_wall.png'
+import initTerritories from './territories'
+import initResources from './resources'
+import initBattles from './battles'
 
 const { width, height, scale, mapOffsetY } = vars;
 
@@ -21,7 +23,7 @@ export let stage = new Konva.Stage({
 export let layer = new Konva.Layer();
 let textLayer = new Konva.Layer();
 
-let group = new Konva.Group({
+export let group = new Konva.Group({
     offsetY: mapOffsetY,
     draggable: true,
     dragBoundFunc(pos) {
@@ -69,7 +71,7 @@ imageObj.onload = function () {
     img.transformsEnabled('position');
     group.add(img);
     img.moveToBottom();
-    layer.draw();
+    layer.batchDraw();
 };
 imageObj.src = mapImageUrl;
 
@@ -85,14 +87,17 @@ mapWallImage.onload = function () {
     });
     img.transformsEnabled('position');
     group.add(img);
-    layer.draw();
+    layer.batchDraw();
+    layer.find('.resourcesGroup').forEach(node => node.moveToTop());
 }
 mapWallImage.src = mapWallImageUrl;
 
-initTerritories(group, function (newMsg) {
+initTerritories(function (newMsg) {
     text.setText(newMsg);
-    textLayer.draw();
+    textLayer.batchDraw();
 });
+initBattles();
+initResources();
 
 layer.add(group);
 

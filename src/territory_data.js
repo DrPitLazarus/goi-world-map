@@ -1,4 +1,4 @@
-import territoryBoundaries from './territory_boundries';
+import territoryBoundaries from './territory_boundries'
 
 export default {
     tamblair: {
@@ -34,14 +34,14 @@ export default {
     hongshiCoast: {
         boundaries: territoryBoundaries[3],
         capitol: [419, 777],
-        // contested: {
-        //     attacker: "yesha",
-        //     attackerProgress: 17000,
-        //     attackerGoal: 282000,
-        //     defender: "anglea",
-        //     defenderProgress: 234000,
-        //     defenderGoal: 372000
-        // },
+        contested: {
+            attacker: "yesha",
+            attackerProgress: 38000,
+            attackerGoal: 282000,
+            defender: "anglea",
+            defenderProgress: 234000,
+            defenderGoal: 372000
+        },
         name: 'Hongshi Coast',
         position: [299, 759]
     },
@@ -60,6 +60,14 @@ export default {
     hanat: {
         boundaries: territoryBoundaries[17],
         capitol: [611, 588],
+        contested: {
+            attacker: "anglea",
+            attackerProgress: 184000,
+            attackerGoal: 248000,
+            defender: "baron",
+            defenderProgress: 174000,
+            defenderGoal: 284000
+        },
         name: 'Hanat',
         position: [529, 574]
     },

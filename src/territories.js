@@ -1,12 +1,11 @@
-import Konva from 'konva';
-import vars, { factions } from './vars';
-import { stage, layer, eventBus } from './index';
-import loadResources from './load_resources';
-import data from './territory_data';
+import Konva from 'konva'
+import vars, { factions } from './vars'
+import { stage, layer, group, eventBus } from './index'
+import loadResources from './load_resources'
+import data from './territory_data'
 
-const { scale } = vars;
 
-export default function initTerritories(group, writeMessage) {
+export default function initTerritories(writeMessage) {
     for (let node in data) {
         let nodeLine = new Konva.Line({
             points: data[node].boundaries.map(val => val * 0.78),
@@ -26,105 +25,15 @@ export default function initTerritories(group, writeMessage) {
             });
         }
         let nodeCaptiol = new Konva.Circle({
-            x: data[node].capitol[0] * scale,
-            y: data[node].capitol[1] * scale,
+            x: data[node].capitol[0] * vars.scale,
+            y: data[node].capitol[1] * vars.scale,
             radius: 6,
             fill: 'white',
             listening: false
         });
         nodeCaptiol.transformsEnabled('position');
-        let nodeResourcesGroup = new Konva.Group({
-            x: data[node].capitol[0] * scale,
-            y: data[node].capitol[1] * scale - 25,
-            visible: false,
-            listening: false
-        });
-        nodeResourcesGroup.transformsEnabled('position');
-        let nodeResourcesCircle = new Konva.Circle({
-            fill: 'orange',
-            radius: 16,
-            listening: false
-        });
-        nodeResourcesCircle.transformsEnabled('position');
-        let nodeResourcesTextRect = new Konva.Rect({
-            fill: '#1b1b13',
-            width: 40,
-            height: 24,
-            y: -12,
-            cornerRadius: 10,
-            listening: false
-        });
-        nodeResourcesTextRect.transformsEnabled('position');
-        let nodeResourcesText = new Konva.Text({
-            text: data[node].resourceValue ? data[node].resourceValue.toString() : '',
-            fill: 'white',
-            fontSize: 16,
-            x: 20,
-            y: -8,
-            listening: false
-        });
-        nodeResourcesText.transformsEnabled('position');
-        let nodeResourcesImage = new Image();
-        nodeResourcesImage.onload = function () {
-            let img = new Konva.Image({
-                image: nodeResourcesImage,
-                width: 24,
-                height: 24,
-                x: -12,
-                y: -12,
-                listening: false
-            });
-            img.transformsEnabled('position');
-            nodeResourcesGroup.add(img);
-        }
-        nodeResourcesImage.src = data[node].resource ? loadResources[data[node].resource] : loadResources['water'];
         group.add(nodeLine);
         group.add(nodeCaptiol);
-        nodeResourcesGroup.add(nodeResourcesCircle);
-        nodeResourcesGroup.add(nodeResourcesTextRect);
-        nodeResourcesGroup.add(nodeResourcesText)
-        nodeResourcesTextRect.moveToBottom();
-        group.add(nodeResourcesGroup);
-        eventBus.addEventListener("viewSelectChange", e => {
-            nodeResourcesGroup.visible(e.target == 'resources' ? true : false);
-            layer.batchDraw();
-        });
-        if (data[node].contested) {
-            let { attacker, attackerGoal, attackerProgress, defender, defenderGoal, defenderProgress } = data[node].contested;
-            let nodeBattle = new Konva.Group({
-                x: data[node].capitol[0],
-                y: data[node].capitol[1],
-                offsetX: 30,
-                offsetY: 75
-            });
-            let nodeBattleBase = new Konva.Line({
-                points: [0, 0, 60, 0, 60, 50, 30, 70, 0, 50],
-                fill: 'black',
-                closed: true
-            });
-            let nodeBattleAttacker = new Konva.Rect({
-                x: 5,
-                y: 5,
-                width: 50 * (attackerProgress / attackerGoal),
-                height: 6,
-                fill: factions[attacker].color
-            });
-            let nodeBattleDefender = new Konva.Rect({
-                x: 5,
-                y: 13,
-                width: 50 * (defenderProgress / defenderGoal),
-                height: 6,
-                fill: factions[defender].color
-            });
-            nodeBattle.add(nodeBattleBase);
-            nodeBattle.add(nodeBattleAttacker);
-            nodeBattle.add(nodeBattleDefender);
-            group.add(nodeBattle);
-            eventBus.addEventListener("viewSelectChange", e => {
-                nodeBattle.visible(e.target == 'battles' ? true : false);
-                layer.batchDraw();
-            });
-        }
         nodeLine.on('mouseover', function () {
             let msg = data[node].name;
             if (data[node].contested) {

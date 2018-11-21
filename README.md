@@ -1,25 +1,6 @@
 # goi-world-map
 
-An online version of GOI's world map powered by Konva.js. Currently a WIP.
+An interactive world map for Guns of Icarus Online.
 
-## Dev
-Install parcel-bundler
-```bash
-$ yarn global add parcel-bundler
-# or
-$ npm install -g parcel-bundler
-```
-
-Install dependencies
-```bash
-$ yarn
-# or
-$ npm install
-```
-
-Start
-```bash
-$ yarn run dev
-# or
-$ npm run dev
-```
+Trying to make the map with SVG this time and see if it performs better than a canvas libray.
+Currently using [ariutta/svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom) for cross-browser panning and zooming.

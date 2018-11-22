@@ -56,7 +56,7 @@ territories = {
         
         capitol: [677, 712],
         name: 'Paritus',
-        position: [580, 646]
+        position: [686, 724]
     },
     hanat: {
         
@@ -70,7 +70,7 @@ territories = {
             defenderGoal: 284000
         },
         name: 'Hanat',
-        position: [529, 574]
+        position: [645, 629]
     },
     qinqaachi: {
         
@@ -94,7 +94,7 @@ territories = {
         
         capitol: [840, 809],
         name: 'Virna',
-        position: [770, 687]
+        position: [855, 807]
     },
     urhal: {
         
@@ -119,13 +119,13 @@ territories = {
         
         capitol: [1080, 798],
         name: 'Skyend',
-        position: [989, 767],
+        position: [1040, 824],
     },
     ravenrock: {
         
         capitol: [1150, 819],
         name: 'Ravenrock',
-        position: [1088, 790],
+        position: [1127, 850],
     },
     glowwater: {
         
@@ -137,31 +137,31 @@ territories = {
         
         capitol: [1006, 886],
         name: 'Faberia',
-        position: [931, 779]
+        position: [954, 859]
     },
     aspara: {
         
         capitol: [1190, 971],
         name: 'Aspara',
-        position: [933, 893]
+        position: [1048, 946]
     },
     bannensRest: {
         
         capitol: [888, 913],
         name: "Bannen's Rest",
-        position: [827, 832]
+        position: [843, 894]
     },
     fallow: {
         
         capitol: [766, 868],
         name: "Fallow",
-        position: [652, 801]
+        position: [727, 856]
     },
     cathedral: {
         
         capitol: [799, 971],
         name: "Cathedral",
-        position: [715, 888]
+        position: [772, 960]
     },
     aleston: {
         
@@ -413,48 +413,49 @@ territories = {
         
         capitol: [1761, 1078],
         name: "Allonia",
-        position: [1660, 995]
+        position: [1700, 1052]
     },
     lutessa: {
         
         capitol: [1633, 1184],
         name: "Lutessa",
-        position: [1568, 1014]
+        position: [1600, 1105]
     },
     averna: {
         
         capitol: [1602, 989],
+        isHomeCapitol: true,
         name: "Averna",
-        position: [1561, 876]
+        position: [1602, 967]
     },
     anthos: {
         
         capitol: [1579, 878],
         name: "Anthos",
-        position: [1535, 736]
+        position: [1584, 856]
     },
     lascus: {
         
         capitol: [1487, 1002],
         name: "Lascus",
-        position: [1410, 820]
+        position: [1435, 954]
     },
     itonia: {
         
         capitol: [1409, 897],
         name: "Itonia",
-        position: [1399, 630]
+        position: [1476, 768]
     },
     serpentsPoint: {
         
         capitol: [1326, 770],
         name: "Serpent's Point",
-        position: [1300, 711]
+        position: [1316, 762]
     },
     blackcliff: {
         
         capitol: [1284, 820],
         name: "Blackcliff",
-        position: [1226, 775]
+        position: [1246, 811]
 	}
 }

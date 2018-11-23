@@ -1,0 +1,28 @@
+{
+  "name": "goi-world-map",
+  "version": "0.0.1",
+  "description": "An interactive world map for Guns of Icarus Online.",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrPitLazarus/goi-world-map.git"
+  },
+  "author": "Dr. Pit Lazarus <drpitlazarus@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DrPitLazarus/goi-world-map/issues"
+  },
+  "homepage": "https://github.com/DrPitLazarus/goi-world-map#readme",
+  "dependencies": {
+    "svg.js": "^2.7.0",
+    "svg.panzoom.js": "^1.2.0"
+  },
+  "devDependencies": {
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0"
+  }
+}

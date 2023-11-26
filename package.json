@@ -23,6 +23,8 @@
     "leaflet": "^1.9.4"
   },
   "devDependencies": {
-    "vite": "^5.0.0"
+    "sharp": "^0.32.6",
+    "vite": "^5.0.0",
+    "vite-plugin-image-optimizer": "^1.1.7"
   }
 }

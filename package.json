@@ -1,10 +1,12 @@
 {
   "name": "goi-world-map",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "An interactive world map for Guns of Icarus Online.",
+  "type": "module",
   "main": "src/main.js",
   "scripts": {
-    "build": "browserify src/main.js -o dist/bundle.js",
+    "build": "vite build",
+    "dev": "vite --host",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +20,9 @@
   },
   "homepage": "https://github.com/DrPitLazarus/goi-world-map#readme",
   "dependencies": {
-    "leaflet": "^1.3.4"
+    "leaflet": "^1.9.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
 }

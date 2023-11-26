@@ -1,0 +1,21 @@
+body { margin: 0; }
+*, *::before, *::after { box-sizing: border-box; }
+
+#map { 
+    height: 100dvh; /* dynamic viewport height (for mobile browsers) */
+    width: 100%; 
+    background-color: #181c18;
+}
+
+/* hide the painter control before it's moved to the correct place */
+body > territory-bounds-painter {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+#painter-reset {
+    width: 100%;
+}

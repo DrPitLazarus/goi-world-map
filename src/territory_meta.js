@@ -1,4 +1,4 @@
-module.exports = [
+export default [
     {
         capitol: [1483, 235],
         name: 'Tamblair'

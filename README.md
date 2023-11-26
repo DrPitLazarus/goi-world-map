@@ -14,6 +14,7 @@ Hosted here: https://goi-world-map.drpitlazar.us
   - click/tap territories to paint
   - buttons for paint all, randomize paint, and reset
   - paint data is not stored; everything will reset on reload
+- v0.2.0 monument overlay has been added: view monument image and text
 
 
 ## Technologies

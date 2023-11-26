@@ -1,6 +1,6 @@
 {
   "name": "goi-world-map",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An interactive world map for Guns of Icarus Online.",
   "type": "module",
   "main": "src/main.js",

@@ -2,7 +2,9 @@ import L from "leaflet";
 import terrBounds from "./territory_bounds";
 import terrMeta from "./territory_meta";
 import factions from "./factions";
+import monumentData from "./monuments";
 import assetMap from "../assets/map_compressed.png";
+import assetMonumentIcon from "../assets/monuments/monument-icon.png";
 
 // padding allows rendering outside of the visible area, preventing redraws when panning
 let theMap = L.map("map", {
@@ -19,8 +21,19 @@ let theMap = L.map("map", {
   zoomSnap: 0.5,
 });
 
-let attribution = L.control.attribution({ prefix: "Map Image &copy; Muse Games" }).addTo(theMap);
-attribution.addAttribution('<a href="https://leafletjs.com" target="_blank">Leaflet</a>');
+// uncomment to get mouse position in console
+// theMap.addEventListener("mousemove", (event) => {
+//   let lat = Math.round(event.latlng.lat * 100000) / 100000;
+//   let lng = Math.round(event.latlng.lng * 100000) / 100000;
+//   console.log(lat, lng);
+// });
+
+let attribution = L.control
+  .attribution({ prefix: "Map Image &copy; Muse Games" })
+  .addTo(theMap);
+attribution.addAttribution(
+  '<a href="https://leafletjs.com" target="_blank">Leaflet</a>'
+);
 
 // [bottom, left], [top, right]
 let bounds = [
@@ -59,11 +72,13 @@ let overlayTerritory = L.featureGroup()
   .on("click", (e) => paintTerritory(e.sourceTarget, painterColor))
   .addTo(theMap);
 let overlayCapitols = L.layerGroup().addTo(theMap);
+let overlayMonuments = L.featureGroup().addTo(theMap);
 
 let baseMaps = { "The Map": mapImage };
 let overlayMaps = {
   "Territory Bounds": overlayTerritory,
   "Capitol Markers": overlayCapitols,
+  "Monuments": overlayMonuments,
 };
 
 // extend the normal layer control to add territory bounds painter
@@ -72,7 +87,9 @@ L.Control.Layers.Custom = L.Control.Layers.extend({
     L.Control.Layers.prototype._initLayout.call(this);
     L.DomUtil.create("div", "leaflet-control-layers-separator", this._section);
     let painterDiv = document.querySelector("territory-bounds-painter");
-    let painterDivSection = document.querySelector("territory-bounds-painter > section")
+    let painterDivSection = document.querySelector(
+      "territory-bounds-painter > section"
+    );
     let painterCheckbox = document.querySelector("#painter-checkbox");
     painterCheckbox.addEventListener("change", (e) => {
       painterEnabled = e.target.checked;
@@ -81,7 +98,8 @@ L.Control.Layers.Custom = L.Control.Layers.extend({
     });
     let painterPaints = document.querySelector("paints");
     painterPaints.addEventListener("change", (e) => {
-      if (e.target.value == "unclaimed") return (painterColor = PAINTER_COLOR_UNCLAIMED);
+      if (e.target.value == "unclaimed")
+        return (painterColor = PAINTER_COLOR_UNCLAIMED);
       painterColor = factions[e.target.value].color;
     });
 
@@ -103,25 +121,51 @@ L.Control.Layers.Custom = L.Control.Layers.extend({
     });
 
     let painterRandomizeAll = document.querySelector("#randomize-all");
-    painterRandomizeAll.addEventListener("click", paintAllTerritoriesRandomized);
+    painterRandomizeAll.addEventListener(
+      "click",
+      paintAllTerritoriesRandomized
+    );
 
     // last step: move the painter div into the layer control
     this._section.appendChild(painterDiv);
   },
 });
 
-let layerControl = new L.Control.Layers.Custom(baseMaps, overlayMaps, { collapsed: true, hideSingleBase: true }).addTo(theMap);
+let layerControl = new L.Control.Layers.Custom(baseMaps, overlayMaps, {
+  collapsed: true,
+  hideSingleBase: true,
+}).addTo(theMap);
 
 let refTerritories = {};
 // import territory bounds data
 terrBounds.forEach((territory) => {
   let name = territory[0];
-  let ref = L.polygon(territory[1], { color: PAINTER_COLOR_UNCLAIMED, weight: 1, interactive: painterEnabled }).addTo(overlayTerritory);
+  let ref = L.polygon(territory[1], {
+    color: PAINTER_COLOR_UNCLAIMED,
+    weight: 1,
+    interactive: painterEnabled,
+  }).addTo(overlayTerritory);
   refTerritories[name] = ref;
 });
 // import capitol data
 terrMeta.forEach((meta) => {
-  L.circleMarker(meta.capitol, { radius: 5, color: "#fff", fillOpacity: 1, weight: 1, interactive: false }).addTo(overlayCapitols);
+  L.circleMarker(meta.capitol, {
+    radius: 5,
+    color: "#fff",
+    fillOpacity: 1,
+    weight: 1,
+    interactive: false,
+  }).addTo(overlayCapitols);
+});
+
+let monumentIcon = L.icon({
+  iconUrl: assetMonumentIcon,
+  iconSize: [64, 64],
+  iconAnchor: [32, 32],
+  popupAnchor: [0, -16],
+});
+monumentData.forEach((monument) => {
+  createMonumentMarker(monument);
 });
 
 function paintFactionBaseTerritories() {
@@ -157,6 +201,14 @@ function paintAllTerritoriesRandomized() {
     let randomColor = colors[Math.floor(Math.random() * colors.length)];
     paintTerritory(refTerritories[territory], randomColor);
   }
+}
+
+function createMonumentMarker(monumentData) {
+  return L.marker(monumentData.position, { icon: monumentIcon })
+    .bindPopup(`<img src="${monumentData.imageUrl}"/>${monumentData.text}`, {
+      className: "monument-image",
+    })
+    .addTo(overlayMonuments);
 }
 
 // run once

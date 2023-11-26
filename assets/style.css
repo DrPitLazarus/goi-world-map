@@ -16,6 +16,11 @@ body > territory-bounds-painter {
     display: none;
 }
 
+.monument-image img {
+    width: 100%;
+    height: 150px;
+}
+
 #painter-reset {
     width: 100%;
 }

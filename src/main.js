@@ -168,13 +168,92 @@ monumentData.forEach((monument) => {
   createMonumentMarker(monument);
 });
 
+// the original 7 factions: https://trello.com/c/Ev9RfFv5/126-the-7-factions
 function paintFactionBaseTerritories() {
-  paintTerritory(refTerritories.kinforth, factions.anglea.color);
-  paintTerritory(refTerritories.lordsLeap, factions.baron.color);
-  paintTerritory(refTerritories.averna, factions.chaladon.color);
-  paintTerritory(refTerritories.vyshtorg, factions.merchant.color);
-  paintTerritory(refTerritories.alleron, factions.arashi.color);
-  paintTerritory(refTerritories.changning, factions.yesha.color);
+  let angelanTerritories = [
+    "kinforth",
+    "tamblair",
+    "oaxley",
+    "utentana",
+    "cusichaca",
+    "hongshiCoast",
+    "hanat",
+    "qinqaachi",
+    "ulavaar",
+  ];
+  angelanTerritories.forEach((territory) => {
+    paintTerritory(refTerritories[territory], factions.anglea.color);
+  });
+  let baronTerritories = [
+    "lordsLeap",
+    "anvala",
+    "urhal",
+    "northlake",
+    "glowwater",
+    "skyend",
+    "ravenrock",
+    "blackcliff",
+    "serpentsPoint",
+  ];
+  baronTerritories.forEach((territory) => {
+    paintTerritory(refTerritories[territory], factions.baron.color);
+  });
+  let chaladonTerritories = [
+    "averna",
+    "itonia",
+    "anthos",
+    "lascus",
+    "allonia",
+    "lutessa",
+    "ballast",
+    "beldusios",
+    "lirodunum",
+  ];
+  chaladonTerritories.forEach((territory) => {
+    paintTerritory(refTerritories[territory], factions.chaladon.color);
+  });
+  let merchantTerritories = [
+    "vyshtorg",
+    "troydon",
+    "sabakumura",
+    "orlevsela",
+    "selogorod",
+    "starostrog",
+    "vamaRea",
+    "morMare",
+    "andelata",
+  ];
+  merchantTerritories.forEach((territory) => {
+    paintTerritory(refTerritories[territory], factions.merchant.color);
+  });
+  let arashiTerritories = [
+    "alleron",
+    "flyaway",
+    "sabbia",
+    "canon",
+    "naufrage",
+    "faron",
+    "landmark",
+    "caldera",
+    "kire",
+  ];
+  arashiTerritories.forEach((territory) => {
+    paintTerritory(refTerritories[territory], factions.arashi.color);
+  });
+  let yeshaTerritories = [
+    "changning",
+    "jingshan",
+    "qinjuru",
+    "wuTower",
+    "sanctuary",
+    "yaoLingPass",
+    "luTower",
+    "baiHuaHills",
+    "dragontown",
+  ];
+  yeshaTerritories.forEach((territory) => {
+    paintTerritory(refTerritories[territory], factions.yesha.color);
+  });
 }
 
 function resetAllTerritoriesPaint() {

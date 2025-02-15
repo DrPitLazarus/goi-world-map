@@ -150,7 +150,7 @@ terrBounds.forEach((territory) => {
 // import capitol data
 terrMeta.forEach((meta) => {
   L.circleMarker(meta.capitol, {
-    radius: 5,
+    radius: 3,
     color: "#fff",
     fillOpacity: 1,
     weight: 1,

@@ -160,8 +160,8 @@ terrMeta.forEach((meta) => {
 
 let monumentIcon = L.icon({
   iconUrl: assetMonumentIcon,
-  iconSize: [64, 64],
-  iconAnchor: [32, 32],
+  iconSize: [50, 50],
+  iconAnchor: [25, 25],
   popupAnchor: [0, -16],
 });
 monumentData.forEach((monument) => {

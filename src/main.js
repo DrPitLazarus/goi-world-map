@@ -143,6 +143,7 @@ terrBounds.forEach((territory) => {
   let ref = L.polygon(territory[1], {
     color: PAINTER_COLOR_UNCLAIMED,
     weight: 0,
+    fillOpacity: 0.4,
     interactive: painterEnabled,
   }).addTo(overlayTerritory);
   refTerritories[name] = ref;

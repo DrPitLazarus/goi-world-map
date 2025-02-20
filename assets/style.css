@@ -7,6 +7,11 @@ body { margin: 0; }
     background-color: #181c18;
 }
 
+/* Disable selecting text */
+.leaflet-control-layers-list {
+    user-select: none;
+}
+
 /* hide the painter control before it's moved to the correct place */
 body > territory-bounds-painter {
     display: none;

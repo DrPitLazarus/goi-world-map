@@ -1,4 +1,5 @@
 import L from "leaflet";
+import { formatDistanceToNowStrict } from 'date-fns';
 import terrBounds from "./territory_bounds";
 import terrMeta from "./territory_meta";
 import factions from "./factions";
@@ -139,6 +140,9 @@ L.Control.Layers.Custom = L.Control.Layers.extend({
     let painterReset = document.querySelector("#painter-reset");
     painterReset.addEventListener("click", resetAllTerritoriesPaint);
 
+    let painterLatestState = document.querySelector("#painter-latest-state");
+    painterLatestState.addEventListener("click", paintTerritoriesFromLatestState);
+
     let painterPaintAll = document.querySelector("#paint-all");
     painterPaintAll.addEventListener("click", () => {
       paintAllTerritories(painterColor);
@@ -200,6 +204,37 @@ function paintFactionBaseTerritories() {
   }
 }
 
+let lastUpdate = null;
+let lastUpdateAttrib = "";
+
+async function paintTerritoriesFromLatestState() {
+  // Reset to default color.
+  paintAllTerritories();
+  let response = await fetch("https://goi-library.drpitlazar.us/api/territory-states");
+  if (!response.ok) {
+    console.error("API response not OK! :(");
+    paintFactionBaseTerritories();
+    return;
+  }
+  let data = await response.json();
+  lastUpdate = data.results[0].updatedAt;
+  // Update attribution.
+  attribution.removeAttribution(lastUpdateAttrib);
+  let attribText = `State updated ${timeAgo(lastUpdate)}`;
+  attribution.addAttribution(attribText);
+  lastUpdateAttrib = attribText;
+  // Paint from data.
+  for (let territory of data.results) {
+    let ref = terrMeta.find((terr) => terr.id === territory.territoryId);
+    let faction = factions.find((fac) => fac.id === territory.factionId);
+    paintTerritory(ref.refBounds, faction.color);
+  }
+}
+
+function timeAgo(date) {
+  return formatDistanceToNowStrict(date, { addSuffix: true, roundingMethod: 'floor' });
+}
+
 function resetAllTerritoriesPaint() {
   paintAllTerritories(PAINTER_COLOR_UNCLAIMED);
   paintFactionBaseTerritories();
@@ -235,4 +270,4 @@ function createMonumentMarker(monumentData) {
 }
 
 // run once
-paintFactionBaseTerritories();
+paintTerritoriesFromLatestState();

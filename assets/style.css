@@ -26,6 +26,7 @@ body > territory-bounds-painter {
     height: 150px;
 }
 
-#painter-reset {
+#painter-reset,
+#painter-latest-state {
     width: 100%;
 }

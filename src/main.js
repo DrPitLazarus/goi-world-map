@@ -29,11 +29,11 @@ let theMap = L.map("map", {
 // });
 
 let attribution = L.control
-  .attribution({ prefix: "Map Image &copy; Muse Games" })
+  .attribution({ 
+    prefix: `<a href="https://github.com/DrPitLazarus/goi-world-map" target="_blank">goi-world-map</a>` 
+  })
   .addTo(theMap);
-attribution.addAttribution(
-  '<a href="https://leafletjs.com" target="_blank">Leaflet</a>'
-);
+attribution.addAttribution("Assets &copy; Muse Games");
 
 // [bottom, left], [top, right]
 let bounds = [

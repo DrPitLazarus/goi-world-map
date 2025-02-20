@@ -194,90 +194,10 @@ monumentData.forEach((monument) => {
 
 // the original 7 factions: https://trello.com/c/Ev9RfFv5/126-the-7-factions
 function paintFactionBaseTerritories() {
-  let angelanTerritories = [
-    "kinforth",
-    "tamblair",
-    "oaxley",
-    "utentana",
-    "cusichaca",
-    "hongshiCoast",
-    "hanat",
-    "qinqaachi",
-    "ulavaar",
-  ];
-  angelanTerritories.forEach((territory) => {
-    paintTerritory(refTerritories[territory], factions.anglea.color);
-  });
-  let baronTerritories = [
-    "lordsLeap",
-    "anvala",
-    "urhal",
-    "northlake",
-    "glowwater",
-    "skyend",
-    "ravenrock",
-    "blackcliff",
-    "serpentsPoint",
-  ];
-  baronTerritories.forEach((territory) => {
-    paintTerritory(refTerritories[territory], factions.baron.color);
-  });
-  let chaladonTerritories = [
-    "averna",
-    "itonia",
-    "anthos",
-    "lascus",
-    "allonia",
-    "lutessa",
-    "ballast",
-    "beldusios",
-    "lirodunum",
-  ];
-  chaladonTerritories.forEach((territory) => {
-    paintTerritory(refTerritories[territory], factions.chaladon.color);
-  });
-  let merchantTerritories = [
-    "vyshtorg",
-    "troydon",
-    "sabakumura",
-    "orlevsela",
-    "selogorod",
-    "starostrog",
-    "vamaRea",
-    "morMare",
-    "andelata",
-  ];
-  merchantTerritories.forEach((territory) => {
-    paintTerritory(refTerritories[territory], factions.merchant.color);
-  });
-  let arashiTerritories = [
-    "alleron",
-    "flyaway",
-    "sabbia",
-    "canon",
-    "naufrage",
-    "faron",
-    "landmark",
-    "caldera",
-    "kire",
-  ];
-  arashiTerritories.forEach((territory) => {
-    paintTerritory(refTerritories[territory], factions.arashi.color);
-  });
-  let yeshaTerritories = [
-    "changning",
-    "jingshan",
-    "qinjuru",
-    "wuTower",
-    "sanctuary",
-    "yaoLingPass",
-    "luTower",
-    "baiHuaHills",
-    "dragontown",
-  ];
-  yeshaTerritories.forEach((territory) => {
-    paintTerritory(refTerritories[territory], factions.yesha.color);
-  });
+  for (let territory of terrMeta) {
+    let faction = factions.find((fac) => fac.id === territory.startingFactionId);
+    paintTerritory(territory.refBounds, faction.color);
+  }
 }
 
 function resetAllTerritoriesPaint() {
@@ -290,8 +210,8 @@ function paintTerritory(ref, color = PAINTER_COLOR_UNCLAIMED) {
 }
 
 function paintAllTerritories(color = PAINTER_COLOR_UNCLAIMED) {
-  for (let territory in refTerritories) {
-    paintTerritory(refTerritories[territory], color);
+  for (let territory of terrMeta) {
+    paintTerritory(territory.refBounds, color);
   }
 }
 
@@ -300,9 +220,9 @@ function paintAllTerritoriesRandomized() {
   for (let faction in factions) {
     colors.push(factions[faction].color);
   }
-  for (let territory in refTerritories) {
+  for (let territory of terrMeta) {
     let randomColor = colors[Math.floor(Math.random() * colors.length)];
-    paintTerritory(refTerritories[territory], randomColor);
+    paintTerritory(territory.refBounds, randomColor);
   }
 }
 

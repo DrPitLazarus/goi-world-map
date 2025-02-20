@@ -72,7 +72,8 @@ let overlayTerritory = L.featureGroup()
   .on("click", (e) => paintTerritory(e.sourceTarget, painterColor))
   .addTo(theMap);
 let overlayCapitols = L.layerGroup().addTo(theMap);
-let overlayMonuments = L.featureGroup().addTo(theMap);
+// Didn't addTo(theMap) so it isn't enabled by default.
+let overlayMonuments = L.featureGroup();
 
 let baseMaps = { "The Map": mapImage };
 let overlayMaps = {

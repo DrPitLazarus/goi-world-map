@@ -137,28 +137,27 @@ let layerControl = new L.Control.Layers.Custom(baseMaps, overlayMaps, {
   hideSingleBase: true,
 }).addTo(theMap);
 
-let refTerritories = {};
-// import territory bounds data
-terrBounds.forEach((territory) => {
-  let name = territory[0];
-  let ref = L.polygon(territory[1], {
+for (let [index, territory] of terrMeta.entries()) {
+  // Create bounds polygon.
+  let bounds = terrBounds[territory.boundsIndex][1];
+  let territoryPolygon = L.polygon(bounds, {
     color: PAINTER_COLOR_UNCLAIMED,
     weight: 0,
     fillOpacity: 0.4,
     interactive: painterEnabled,
   }).addTo(overlayTerritory);
-  refTerritories[name] = ref;
-});
-// import capitol data
-terrMeta.forEach((meta) => {
-  L.circleMarker(meta.capitol, {
+  // Create capitol marker.
+  let capitolMarker = L.circleMarker(territory.capitol, {
     radius: 3,
     color: "#fff",
     fillOpacity: 1,
     weight: 1,
     interactive: false,
   }).addTo(overlayCapitols);
-});
+  // Add references to terrMeta.
+  terrMeta[index].refBounds = territoryPolygon;
+  terrMeta[index].refCapitolMarker = capitolMarker;
+}
 
 let monumentIcon = L.icon({
   iconUrl: assetMonumentIcon,

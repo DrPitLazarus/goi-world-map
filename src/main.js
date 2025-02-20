@@ -46,6 +46,7 @@ let mapImage = L.imageOverlay(assetMap, bounds).addTo(theMap);
 const PAINTER_COLOR_UNCLAIMED = "#AAA";
 let painterColor = PAINTER_COLOR_UNCLAIMED;
 let painterEnabled = false;
+let painterCycle = true;
 
 // add setInteractivity to layer
 // https://github.com/Leaflet/Leaflet/issues/5442#issuecomment-424014428
@@ -69,7 +70,26 @@ L.Layer.prototype.setInteractive = function (interactive) {
 
 let overlayTerritory = L.featureGroup()
   // ability to click territories to paint
-  .on("click", (e) => paintTerritory(e.sourceTarget, painterColor))
+  .on("click contextmenu dblclick", (e) => {
+    if (e.type === "dblclick") {
+      // Prevent double click to zoom.
+      L.DomEvent.stopPropagation(e);
+      return;
+    }
+    if (painterCycle) {
+      let currentColor = e.sourceTarget.options.color;
+      let currentColorIndex = factions.findIndex((fac) => fac.color === currentColor);
+      let newColorIndex = e.type === "click" ? currentColorIndex + 1 : currentColorIndex - 1;
+      if (newColorIndex > factions.length - 1) {
+        newColorIndex = 0;
+      }
+      if (newColorIndex < 0) {
+        newColorIndex = factions.length - 1;
+      }
+      painterColor = factions[newColorIndex].color;
+    }
+    paintTerritory(e.sourceTarget, painterColor);
+  })
   .addTo(theMap);
 let overlayCapitols = L.layerGroup().addTo(theMap);
 // Didn't addTo(theMap) so it isn't enabled by default.
@@ -99,16 +119,19 @@ L.Control.Layers.Custom = L.Control.Layers.extend({
     });
     let painterPaints = document.querySelector("paints");
     painterPaints.addEventListener("change", (e) => {
-      if (e.target.value == "unclaimed")
-        return (painterColor = PAINTER_COLOR_UNCLAIMED);
-      painterColor = factions[e.target.value].color;
+      if (e.target.value === "cycle") {
+        painterCycle = true;
+        return;
+      }
+      painterCycle = false;
+      painterColor = factions.find((fac) => fac.id === parseInt(e.target.value)).color;
     });
 
     // populate painter paints
     let toAddToInnerHtml = "";
-    toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="unclaimed" checked> Unclaimed</label>`;
-    for (let faction in factions) {
-      toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="${faction}"> ${factions[faction].name}</label>`;
+    toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="cycle" checked>Cycle (Left+/Right-)</label>`;
+    for (let faction of factions) {
+      toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="${faction.id}">${faction.name}</label>`;
     }
     painterPaints.innerHTML = toAddToInnerHtml;
 

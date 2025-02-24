@@ -95,12 +95,14 @@ let overlayTerritory = L.featureGroup()
 let overlayCapitols = L.layerGroup().addTo(theMap);
 // Didn't addTo(theMap) so it isn't enabled by default.
 let overlayMonuments = L.featureGroup();
+let overlayPathways = L.layerGroup();
 
 let baseMaps = { "The Map": mapImage };
 let overlayMaps = {
   "Territory Bounds": overlayTerritory,
   "Capitol Markers": overlayCapitols,
   "Monuments": overlayMonuments,
+  "Pathways": overlayPathways,
 };
 
 // extend the normal layer control to add territory bounds painter
@@ -164,6 +166,7 @@ let layerControl = new L.Control.Layers.Custom(baseMaps, overlayMaps, {
   hideSingleBase: true,
 }).addTo(theMap);
 
+// Import data into the overlays.
 for (let [index, territory] of terrMeta.entries()) {
   // Create bounds polygon.
   let bounds = terrBounds[territory.boundsIndex][1];
@@ -181,6 +184,16 @@ for (let [index, territory] of terrMeta.entries()) {
     weight: 1,
     interactive: false,
   }).addTo(overlayCapitols);
+  // Create lines connecting adjacent territories for pathways.
+  // I know it'll create duplicate lines on each other, but eh.
+  for (let adjacentId of territory.adjacentIds) {
+    let adjacentCoords = terrMeta.find((terr) => terr.id === adjacentId).capitol;
+    let latlngs = [territory.capitol, adjacentCoords];
+    L.polyline(latlngs, {
+      opacity: 0.4,
+      interactive: false,
+    }).addTo(overlayPathways);
+  }
   // Add references to terrMeta.
   terrMeta[index].refBounds = territoryPolygon;
   terrMeta[index].refCapitolMarker = capitolMarker;

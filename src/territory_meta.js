@@ -2,6 +2,7 @@ export default [
     {
         id: 1,
         boundsIndex: 72,
+        adjacentIds: [2, 3, 5],
         capitol: [1483, 235],
         name: 'Tamblair',
         startingFactionId: 2,
@@ -9,6 +10,7 @@ export default [
     {
         id: 2,
         boundsIndex: 71,
+        adjacentIds: [1, 3, 4],
         capitol: [1572, 317],
         name: 'Kinforth',
         startingFactionId: 2,
@@ -16,6 +18,7 @@ export default [
     {
         id: 3,
         boundsIndex: 70,
+        adjacentIds: [1, 2, 4],
         capitol: [1507, 348],
         name: 'Oaxley',
         startingFactionId: 2,
@@ -23,6 +26,7 @@ export default [
     {
         id: 4,
         boundsIndex: 69,
+        adjacentIds: [2, 3, 7, 8],
         capitol: [1513, 549],
         name: 'Utentana',
         startingFactionId: 2,
@@ -30,6 +34,7 @@ export default [
     {
         id: 5,
         boundsIndex: 30,
+        adjacentIds: [1, 6, 10],
         capitol: [1377, 235],
         name: 'Cusichaca',
         startingFactionId: 2,
@@ -37,6 +42,7 @@ export default [
     {
         id: 6,
         boundsIndex: 31,
+        adjacentIds: [5, 8, 10, 55, 67],
         capitol: [1271, 419],
         name: 'Hongshi Coast',
         startingFactionId: 2,
@@ -44,6 +50,7 @@ export default [
     {
         id: 55,
         boundsIndex: 33,
+        adjacentIds: [6, 56, 67, 68, 69],
         capitol: [1238, 588],
         name: 'Yunin',
         startingFactionId: 0,
@@ -51,6 +58,7 @@ export default [
     {
         id: 56,
         boundsIndex: 60,
+        adjacentIds: [8, 55, 57, 69],
         capitol: [1336, 677],
         name: 'Paritus',
         startingFactionId: 0,
@@ -58,6 +66,7 @@ export default [
     {
         id: 8,
         boundsIndex: 61,
+        adjacentIds: [4, 6, 7, 9, 53, 56],
         capitol: [1460, 611],
         name: 'Hanat',
         startingFactionId: 2,
@@ -65,6 +74,7 @@ export default [
     {
         id: 7,
         boundsIndex: 68,
+        adjacentIds: [4, 8, 9],
         capitol: [1548, 749],
         name: 'Qinqaachi',
         startingFactionId: 2,
@@ -72,6 +82,7 @@ export default [
     {
         id: 9,
         boundsIndex: 67,
+        adjacentIds: [7, 8, 53, 54],
         capitol: [1512, 885],
         name: 'Ulavaar',
         startingFactionId: 2,
@@ -79,6 +90,7 @@ export default [
     {
         id: 53,
         boundsIndex: 62,
+        adjacentIds: [8, 9, 52, 54, 57],
         capitol: [1321, 875],
         name: 'Anvala',
         startingFactionId: 1,
@@ -86,6 +98,7 @@ export default [
     {
         id: 57,
         boundsIndex: 59,
+        adjacentIds: [53, 56, 58, 69, 70],
         capitol: [1239, 840],
         name: 'Virna',
         startingFactionId: 0,
@@ -93,6 +106,7 @@ export default [
     {
         id: 52,
         boundsIndex: 63,
+        adjacentIds: [47, 51, 53, 54, 58],
         capitol: [1300, 984],
         name: 'Urhal',
         startingFactionId: 1,
@@ -100,6 +114,7 @@ export default [
     {
         id: 54,
         boundsIndex: 66,
+        adjacentIds: [9, 46, 47, 52, 53],
         capitol: [1445, 1078],
         name: 'Northlake',
         startingFactionId: 1,
@@ -107,6 +122,7 @@ export default [
     {
         id: 47,
         boundsIndex: 64,
+        adjacentIds: [46, 48, 50, 51, 52, 54],
         capitol: [1278, 1148],
         name: 'Lord\'s Leap',
         startingFactionId: 1,
@@ -114,6 +130,7 @@ export default [
     {
         id: 51,
         boundsIndex: 55,
+        adjacentIds: [47, 50, 52, 58],
         capitol: [1250, 1080],
         name: 'Skyend',
         startingFactionId: 1,
@@ -121,6 +138,7 @@ export default [
     {
         id: 50,
         boundsIndex: 54,
+        adjacentIds: [41, 47, 48, 51, 59],
         capitol: [1229, 1150],
         name: 'Ravenrock',
         startingFactionId: 1,
@@ -128,6 +146,7 @@ export default [
     {
         id: 46,
         boundsIndex: 65,
+        adjacentIds: [47, 54],
         capitol: [1430, 1221],
         name: 'Glowwater',
         startingFactionId: 1,
@@ -135,6 +154,7 @@ export default [
     {
         id: 58,
         boundsIndex: 56,
+        adjacentIds: [51, 52, 57, 59, 70],
         capitol: [1162, 1006],
         name: 'Faberia',
         startingFactionId: 0,
@@ -142,6 +162,7 @@ export default [
     {
         id: 59,
         boundsIndex: 45,
+        adjacentIds: [37, 38, 50, 58, 60, 70, 71],
         capitol: [1077, 1190],
         name: 'Aspara',
         startingFactionId: 0,
@@ -149,6 +170,7 @@ export default [
     {
         id: 70,
         boundsIndex: 57,
+        adjacentIds: [57, 58, 59, 60, 69, 71],
         capitol: [1135, 888],
         name: 'Bannen\'s Rest',
         startingFactionId: 0,
@@ -156,6 +178,7 @@ export default [
     {
         id: 69,
         boundsIndex: 58,
+        adjacentIds: [55, 56, 57, 68, 70],
         capitol: [1180, 766],
         name: 'Fallow',
         startingFactionId: 0,
@@ -163,6 +186,7 @@ export default [
     {
         id: 73,
         boundsIndex: 36,
+        adjacentIds: [],
         capitol: [1077, 799],
         name: 'Cathedral',
         startingFactionId: 0,
@@ -170,6 +194,7 @@ export default [
     {
         id: 68,
         boundsIndex: 34,
+        adjacentIds: [55, 65, 67, 69],
         capitol: [1105, 695],
         name: 'Aleston',
         startingFactionId: 0,
@@ -177,6 +202,7 @@ export default [
     {
         id: 67,
         boundsIndex: 32,
+        adjacentIds: [6, 10, 11, 55, 65, 66, 68],
         capitol: [1141, 604],
         name: 'Suna',
         startingFactionId: 0,
@@ -184,6 +210,7 @@ export default [
     {
         id: 10,
         boundsIndex: 29,
+        adjacentIds: [5, 6, 11, 12, 13, 67],
         capitol: [1147, 394],
         name: 'Jingshan',
         startingFactionId: 6,
@@ -191,6 +218,7 @@ export default [
     {
         id: 13,
         boundsIndex: 23,
+        adjacentIds: [10, 12, 15, 16],
         capitol: [991, 294],
         name: 'Changning',
         startingFactionId: 6,
@@ -198,6 +226,7 @@ export default [
     {
         id: 12,
         boundsIndex: 24,
+        adjacentIds: [10, 11, 13, 14, 16],
         capitol: [1031, 400],
         name: 'Wu Tower',
         startingFactionId: 6,
@@ -205,6 +234,7 @@ export default [
     {
         id: 11,
         boundsIndex: 28,
+        adjacentIds: [10, 12, 14, 66, 67],
         capitol: [1061, 511],
         name: 'Qinjuru',
         startingFactionId: 6,
@@ -212,6 +242,7 @@ export default [
     {
         id: 66,
         boundsIndex: 27,
+        adjacentIds: [11, 64, 65, 67],
         capitol: [1009, 576],
         name: 'Saltpan',
         startingFactionId: 0,
@@ -219,6 +250,7 @@ export default [
     {
         id: 65,
         boundsIndex: 35,
+        adjacentIds: [64, 66, 67, 68, 72],
         capitol: [1026, 685],
         name: 'Oblivion Pass',
         startingFactionId: 0,
@@ -226,6 +258,7 @@ export default [
     {
         id: 72,
         boundsIndex: 37,
+        adjacentIds: [62, 63, 65, 71],
         capitol: [1012, 747],
         name: 'Garrow',
         startingFactionId: 0,
@@ -233,6 +266,7 @@ export default [
     {
         id: 71,
         boundsIndex: 40,
+        adjacentIds: [59, 61, 62, 70, 72],
         capitol: [1019, 871],
         name: 'Sunder',
         startingFactionId: 0,
@@ -240,6 +274,7 @@ export default [
     {
         id: 60,
         boundsIndex: 41,
+        adjacentIds: [37, 59, 61, 70],
         capitol: [1016, 1021],
         name: 'Lookout',
         startingFactionId: 0,
@@ -247,6 +282,7 @@ export default [
     {
         id: 37,
         boundsIndex: 44,
+        adjacentIds: [28, 38, 39, 59, 60, 61],
         capitol: [978, 1152],
         name: 'Ballast',
         startingFactionId: 3
@@ -254,6 +290,7 @@ export default [
     {
         id: 28,
         boundsIndex: 43,
+        adjacentIds: [32, 34, 37, 61],
         capitol: [886, 1218],
         name: 'Troydon',
         startingFactionId: 4,
@@ -261,6 +298,7 @@ export default [
     {
         id: 61,
         boundsIndex: 42,
+        adjacentIds: [28, 37, 60, 62, 71],
         capitol: [960, 1008],
         name: 'Boomtown',
         startingFactionId: 0,
@@ -268,6 +306,7 @@ export default [
     {
         id: 62,
         boundsIndex: 39,
+        adjacentIds: [61, 63, 71, 72],
         capitol: [924, 936],
         name: 'Jackson Hole',
         startingFactionId: 0,
@@ -275,6 +314,7 @@ export default [
     {
         id: 63,
         boundsIndex: 38,
+        adjacentIds: [22, 32, 62, 64, 72],
         capitol: [769, 908],
         name: 'Albys',
         startingFactionId: 0,
@@ -282,6 +322,7 @@ export default [
     {
         id: 64,
         boundsIndex: 26,
+        adjacentIds: [14, 22, 63, 65, 66],
         capitol: [901, 596],
         name: 'Orrington',
         startingFactionId: 0,
@@ -289,6 +330,7 @@ export default [
     {
         id: 14,
         boundsIndex: 25,
+        adjacentIds: [11, 12, 16, 18, 64],
         capitol: [876, 486],
         name: 'Sanctuary',
         startingFactionId: 6,
@@ -296,6 +338,7 @@ export default [
     {
         id: 16,
         boundsIndex: 21,
+        adjacentIds: [12, 13, 14, 15, 17, 18],
         capitol: [853, 359],
         name: 'Yao Ling Pass',
         startingFactionId: 6,
@@ -303,6 +346,7 @@ export default [
     {
         id: 15,
         boundsIndex: 22,
+        adjacentIds: [13, 16, 17],
         capitol: [894, 235],
         name: 'Lu Tower',
         startingFactionId: 6,
@@ -310,6 +354,7 @@ export default [
     {
         id: 17,
         boundsIndex: 20,
+        adjacentIds: [15, 16, 18, 19, 20],
         capitol: [812, 260],
         name: 'Bai Hua Hills',
         startingFactionId: 6,
@@ -317,6 +362,7 @@ export default [
     {
         id: 18,
         boundsIndex: 19,
+        adjacentIds: [14, 16, 17, 20, 21, 22],
         capitol: [782, 466],
         name: 'Dragontown',
         startingFactionId: 6,
@@ -324,6 +370,7 @@ export default [
     {
         id: 22,
         boundsIndex: 18,
+        adjacentIds: [18, 21, 25, 63, 64],
         capitol: [798, 645],
         name: 'Faron',
         startingFactionId: 5,
@@ -331,6 +378,7 @@ export default [
     {
         id: 25,
         boundsIndex: 17,
+        adjacentIds: [21, 22, 24, 26, 27, 30],
         capitol: [605, 578],
         name: 'Landmark',
         startingFactionId: 5,
@@ -338,6 +386,7 @@ export default [
     {
         id: 21,
         boundsIndex: 16,
+        adjacentIds: [18, 20, 22, 23, 24, 25],
         capitol: [678, 430],
         name: 'Naufrage',
         startingFactionId: 5,
@@ -345,6 +394,7 @@ export default [
     {
         id: 20,
         boundsIndex: 15,
+        adjacentIds: [17, 18, 19, 21, 23],
         capitol: [692, 348],
         name: 'Sabbia',
         startingFactionId: 5,
@@ -352,6 +402,7 @@ export default [
     {
         id: 19,
         boundsIndex: 14,
+        adjacentIds: [17, 20, 23],
         capitol: [704, 211],
         name: 'Flyaway',
         startingFactionId: 5,
@@ -359,6 +410,7 @@ export default [
     {
         id: 23,
         boundsIndex: 13,
+        adjacentIds: [19, 20, 21, 24],
         capitol: [584, 306],
         name: 'Canon',
         startingFactionId: 5,
@@ -366,6 +418,7 @@ export default [
     {
         id: 24,
         boundsIndex: 12,
+        adjacentIds: [21, 23, 25, 26],
         capitol: [505, 382],
         name: 'Alleron',
         startingFactionId: 5,
@@ -373,6 +426,7 @@ export default [
     {
         id: 26,
         boundsIndex: 11,
+        adjacentIds: [24, 25, 27],
         capitol: [482, 578],
         name: 'Caldera',
         startingFactionId: 5,
@@ -380,6 +434,7 @@ export default [
     {
         id: 27,
         boundsIndex: 10,
+        adjacentIds: [25, 26, 29, 30],
         capitol: [462, 743],
         name: 'Kire',
         startingFactionId: 5,
@@ -387,6 +442,7 @@ export default [
     {
         id: 29,
         boundsIndex: 9,
+        adjacentIds: [27, 30, 31],
         capitol: [485, 885],
         name: 'Sabakumura',
         startingFactionId: 4,
@@ -394,6 +450,7 @@ export default [
     {
         id: 31,
         boundsIndex: 8,
+        adjacentIds: [29, 30, 33],
         capitol: [491, 1020],
         name: 'Selogorod',
         startingFactionId: 4,
@@ -401,6 +458,7 @@ export default [
     {
         id: 30,
         boundsIndex: 7,
+        adjacentIds: [25, 27, 29, 31, 32, 33],
         capitol: [562, 1029],
         name: 'Orlevsela',
         startingFactionId: 4,
@@ -408,6 +466,7 @@ export default [
     {
         id: 32,
         boundsIndex: 6,
+        adjacentIds: [28, 30, 33, 34, 63],
         capitol: [631, 1103],
         name: 'Starostrog',
         startingFactionId: 4,
@@ -415,6 +474,7 @@ export default [
     {
         id: 33,
         boundsIndex: 5,
+        adjacentIds: [30, 31, 32, 34, 35],
         capitol: [464, 1142],
         name: 'Vyshtorg',
         startingFactionId: 4,
@@ -422,6 +482,7 @@ export default [
     {
         id: 34,
         boundsIndex: 4,
+        adjacentIds: [28, 32, 33, 35],
         capitol: [680, 1225],
         name: 'Vama Rea',
         startingFactionId: 4,
@@ -429,6 +490,7 @@ export default [
     {
         id: 35,
         boundsIndex: 3,
+        adjacentIds: [33, 34, 36, 39],
         capitol: [552, 1391],
         name: 'Mor Mare',
         startingFactionId: 4,
@@ -436,6 +498,7 @@ export default [
     {
         id: 36,
         boundsIndex: 2,
+        adjacentIds: [35, 42, 45],
         capitol: [681, 1590],
         name: 'Andelata',
         startingFactionId: 4,
@@ -443,6 +506,7 @@ export default [
     {
         id: 45,
         boundsIndex: 1,
+        adjacentIds: [36, 42, 44],
         capitol: [753, 1638],
         name: 'Lirodunum',
         startingFactionId: 3,
@@ -450,6 +514,7 @@ export default [
     {
         id: 44,
         boundsIndex: 0,
+        adjacentIds: [42, 45],
         capitol: [808, 1781],
         name: 'Beldusios',
         startingFactionId: 3,
@@ -457,6 +522,7 @@ export default [
     {
         id: 43,
         boundsIndex: 46,
+        adjacentIds: [41, 42],
         capitol: [970, 1761],
         name: 'Allonia',
         startingFactionId: 3,
@@ -464,6 +530,7 @@ export default [
     {
         id: 42,
         boundsIndex: 47,
+        adjacentIds: [36, 39, 41, 43, 44, 45],
         capitol: [864, 1633],
         name: 'Lutessa',
         startingFactionId: 3,
@@ -471,6 +538,7 @@ export default [
     {
         id: 41,
         boundsIndex: 48,
+        adjacentIds: [39, 40, 42, 43, 50],
         capitol: [1059, 1602],
         name: 'Averna',
         startingFactionId: 3,
@@ -478,6 +546,7 @@ export default [
     {
         id: 40,
         boundsIndex: 49,
+        adjacentIds: [38, 41],
         capitol: [1170, 1579],
         name: 'Anthos',
         startingFactionId: 3,
@@ -485,6 +554,7 @@ export default [
     {
         id: 39,
         boundsIndex: 50,
+        adjacentIds: [35, 37, 38, 41, 42],
         capitol: [1046, 1487],
         name: 'Lascus',
         startingFactionId: 3,
@@ -492,6 +562,7 @@ export default [
     {
         id: 38,
         boundsIndex: 51,
+        adjacentIds: [37, 39, 40, 48, 49, 59],
         capitol: [1151, 1409],
         name: 'Itonia',
         startingFactionId: 3,
@@ -499,6 +570,7 @@ export default [
     {
         id: 49,
         boundsIndex: 52,
+        adjacentIds: [38, 48],
         capitol: [1278, 1326],
         name: 'Serpent\'s Point',
         startingFactionId: 1,
@@ -506,6 +578,7 @@ export default [
     {
         id: 48,
         boundsIndex: 53,
+        adjacentIds: [38, 47, 49, 50],
         capitol: [1228, 1284],
         name: 'Blackcliff',
         startingFactionId: 1,

@@ -24,5 +24,20 @@
         <button id="painter-latest-state">Paint Latest State</button>
       </section>
     </territory-bounds-painter>
+    <alliance-config>
+      <label>
+        <input type="checkbox" class="leaflet-control-layers-selector" id="alliance-checkbox"/> <span>Alliance Config</span> <strong id="alliance-status"></strong>
+      </label>
+      <section class="hidden">
+        <label for="alliance-1-color-dropdown">Alliance 1 Color:</label>
+        <select id="alliance-1-color-dropdown"></select>
+        <div id="alliance-1-factions"></div>
+        <label for="alliance-2-color-dropdown">Alliance 2 Color:</label>
+        <select id="alliance-2-color-dropdown"></select>
+        <br>
+        <button id="alliance-apply">Apply</button>
+        <button id="alliance-remove">Remove</button>
+      </section>
+    </alliance-config>
   </body>
 </html>

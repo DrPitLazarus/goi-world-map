@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { formatDistanceToNowStrict } from 'date-fns';
+import { formatDistanceToNowStrict } from "date-fns";
 import terrBounds from "./territory_bounds";
 import terrMeta from "./territory_meta";
 import factions from "./factions";
@@ -30,8 +30,8 @@ let theMap = L.map("map", {
 // });
 
 let attribution = L.control
-  .attribution({ 
-    prefix: `<a href="https://github.com/DrPitLazarus/goi-world-map" target="_blank">goi-world-map</a>` 
+  .attribution({
+    prefix: `<a href="https://github.com/DrPitLazarus/goi-world-map" target="_blank">goi-world-map</a>`,
   })
   .addTo(theMap);
 attribution.addAttribution("Assets &copy; Muse Games");
@@ -48,6 +48,11 @@ const PAINTER_COLOR_UNCLAIMED = "#AAA";
 let painterColor = PAINTER_COLOR_UNCLAIMED;
 let painterEnabled = false;
 let painterCycle = true;
+// Default Alliance config:
+let allianceMode = true;
+let alliance1Factions = [1, 2, 3];
+let alliance1ColorIndex = 1;
+let alliance2ColorIndex = 6;
 
 // add setInteractivity to layer
 // https://github.com/Leaflet/Leaflet/issues/5442#issuecomment-424014428
@@ -77,19 +82,42 @@ let overlayTerritory = L.featureGroup()
       L.DomEvent.stopPropagation(e);
       return;
     }
+
+    let terrMetaRef = terrMeta.find((terr) => terr.refBounds === e.sourceTarget);
+
     if (painterCycle) {
       let currentColor = e.sourceTarget.options.color;
-      let currentColorIndex = factions.findIndex((fac) => fac.color === currentColor);
-      let newColorIndex = e.type === "click" ? currentColorIndex + 1 : currentColorIndex - 1;
-      if (newColorIndex > factions.length - 1) {
-        newColorIndex = 0;
-      }
-      if (newColorIndex < 0) {
-        newColorIndex = factions.length - 1;
+      let currentColorIndex = colorToFactionId(currentColor);
+      let newColorIndex = 0;
+
+      if (allianceMode) {
+        newColorIndex =
+          currentColorIndex === alliance1ColorIndex
+            ? alliance2ColorIndex
+            : alliance1ColorIndex;
+      } else {
+        // Non-allianceMode painterCycle
+        // Left click increase color index / right click decrease.
+        newColorIndex = e.type === "click" ? currentColorIndex + 1 : currentColorIndex - 1;
+        if (newColorIndex > factions.length - 1) {
+          newColorIndex = 0;
+        }
+        if (newColorIndex < 0) {
+          newColorIndex = factions.length - 1;
+        }
+        terrMetaRef.lastFaction = newColorIndex;
       }
       painterColor = factions[newColorIndex].color;
+    } else {
+      // Non-painterCycle mode
+      terrMetaRef.lastFaction = colorToFactionId(painterColor);
     }
+
     paintTerritory(e.sourceTarget, painterColor);
+
+    if (allianceMode && !painterCycle) {
+      updateAllianceModePaint();
+    }
   })
   .addTo(theMap);
 let overlayCapitols = L.layerGroup().addTo(theMap);
@@ -110,56 +138,148 @@ L.Control.Layers.Custom = L.Control.Layers.extend({
   _initLayout: function () {
     L.Control.Layers.prototype._initLayout.call(this);
     L.DomUtil.create("div", "leaflet-control-layers-separator", this._section);
-    let painterDiv = document.querySelector("territory-bounds-painter");
-    let painterDivSection = document.querySelector(
-      "territory-bounds-painter > section"
-    );
-    let painterCheckbox = document.querySelector("#painter-checkbox");
-    painterCheckbox.addEventListener("change", (e) => {
-      painterEnabled = e.target.checked;
-      overlayTerritory.setInteractive(painterEnabled);
-      painterDivSection.classList.toggle("hidden");
-    });
-    let painterPaints = document.querySelector("paints");
-    painterPaints.addEventListener("change", (e) => {
-      if (e.target.value === "cycle") {
-        painterCycle = true;
-        return;
-      }
-      painterCycle = false;
-      painterColor = factions.find((fac) => fac.id === parseInt(e.target.value)).color;
-    });
+    let painterElement = createTerritoryBoundsPainterElement();
+    let allianceElement = createAllianceConfigElement();
 
-    // populate painter paints
-    let toAddToInnerHtml = "";
-    toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="cycle" checked>Cycle (Left+/Right-)</label>`;
-    for (let faction of factions) {
-      toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="${faction.id}">${faction.name}</label>`;
-    }
-    painterPaints.innerHTML = toAddToInnerHtml;
-
-    // buttons
-    let painterReset = document.querySelector("#painter-reset");
-    painterReset.addEventListener("click", resetAllTerritoriesPaint);
-
-    let painterLatestState = document.querySelector("#painter-latest-state");
-    painterLatestState.addEventListener("click", paintTerritoriesFromLatestState);
-
-    let painterPaintAll = document.querySelector("#paint-all");
-    painterPaintAll.addEventListener("click", () => {
-      paintAllTerritories(painterColor);
-    });
-
-    let painterRandomizeAll = document.querySelector("#randomize-all");
-    painterRandomizeAll.addEventListener(
-      "click",
-      paintAllTerritoriesRandomized
-    );
-
-    // last step: move the painter div into the layer control
-    this._section.appendChild(painterDiv);
+    // last step: move the element into the layer control
+    this._section.appendChild(painterElement);
+    this._section.appendChild(allianceElement);
   },
 });
+
+function createTerritoryBoundsPainterElement() {
+  let painterDiv = document.querySelector("territory-bounds-painter");
+  let painterDivSection = document.querySelector("territory-bounds-painter > section");
+  let painterCheckbox = document.querySelector("#painter-checkbox");
+  painterCheckbox.addEventListener("change", (e) => {
+    painterEnabled = e.target.checked;
+    overlayTerritory.setInteractive(painterEnabled);
+    painterDivSection.classList.toggle("hidden");
+  });
+  let painterPaints = document.querySelector("paints");
+  painterPaints.addEventListener("change", (e) => {
+    if (e.target.value === "cycle") {
+      painterCycle = true;
+      return;
+    }
+    painterCycle = false;
+    painterColor = factions.find((fac) => fac.id === parseInt(e.target.value)).color;
+  });
+
+  // populate painter paints
+  let toAddToInnerHtml = "";
+  toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="cycle" checked>Cycle (Left+/Right-)</label>`;
+  for (let faction of factions) {
+    toAddToInnerHtml += `<label><input type="radio" class="leaflet-control-layers-selector" name="painter-radio" value="${faction.id}">${faction.name}</label>`;
+  }
+  painterPaints.innerHTML = toAddToInnerHtml;
+
+  // buttons
+  let painterReset = document.querySelector("#painter-reset");
+  painterReset.addEventListener("click", resetAllTerritoriesPaint);
+
+  let painterLatestState = document.querySelector("#painter-latest-state");
+  painterLatestState.addEventListener("click", paintTerritoriesFromLatestState);
+
+  let painterPaintAll = document.querySelector("#paint-all");
+  painterPaintAll.addEventListener("click", () => {
+    paintAllTerritories(painterColor);
+  });
+
+  let painterRandomizeAll = document.querySelector("#randomize-all");
+  painterRandomizeAll.addEventListener("click", paintAllTerritoriesRandomized);
+  return painterDiv;
+}
+
+function createAllianceConfigElement() {
+  let element = document.querySelector("alliance-config");
+  let elementSection = document.querySelector("alliance-config > section");
+  let sectionCheckbox = document.querySelector("#alliance-checkbox");
+  elementSection.classList.toggle("hidden", !sectionCheckbox.checked);
+  sectionCheckbox.addEventListener("change", (e) => {
+    elementSection.classList.toggle("hidden", !e.target.checked);
+  });
+  let alliance1ColorDropdown = document.querySelector("#alliance-1-color-dropdown");
+  let alliance2ColorDropdown = document.querySelector("#alliance-2-color-dropdown");
+
+  // Populate alliance 1 checkboxes.
+  let alliance1FactionsElement = document.querySelector("#alliance-1-factions");
+  alliance1FactionsElement.innerHTML = (() => {
+    let newInnerHtml = ``;
+    for (let faction of factions.filter((faction) => faction.id > 0)) {
+      let isDefaultSelected = alliance1Factions.includes(faction.id) ? "checked" : "";
+      newInnerHtml += `<label><input type="checkbox" class="leaflet-control-layers-selector" value="${faction.id}" ${isDefaultSelected}/> <span>${faction.name}</span></label>`;
+    }
+    return newInnerHtml;
+  })();
+  let alliance1FactionsCheckboxes =
+    alliance1FactionsElement.querySelectorAll(`input[type="checkbox"]`);
+
+  // Populate alliance faction colors.
+  let toAddToInnerHtml = ``;
+  for (let faction of factions.filter((faction) => faction.id > 0)) {
+    let isDefaultSelected = faction.id === alliance1ColorIndex ? "selected" : "";
+    toAddToInnerHtml += `<option value="${faction.id}" ${isDefaultSelected}>${faction.name}</option>`;
+  }
+  alliance1ColorDropdown.innerHTML = toAddToInnerHtml;
+
+  for (let faction of factions.filter((faction) => faction.id > 0)) {
+    let isDefaultSelected = faction.id === alliance2ColorIndex ? "selected" : "";
+    toAddToInnerHtml += `<option value="${faction.id}" ${isDefaultSelected}>${faction.name}</option>`;
+  }
+  alliance2ColorDropdown.innerHTML = toAddToInnerHtml;
+
+  // Buttons
+  let applyButton = document.querySelector("#alliance-apply");
+  let values = [];
+  applyButton.addEventListener("click", (e) => {
+    console.time("allianceApplyPaint");
+    allianceMode = true;
+    updateAllianceModeStatus();
+    alliance1FactionsElement = [];
+    alliance1ColorIndex = parseInt(alliance1ColorDropdown.value);
+    alliance2ColorIndex = parseInt(alliance2ColorDropdown.value);
+    // Get values from the checkboxes.
+    values = [];
+    for (let checkbox of alliance1FactionsCheckboxes) {
+      let factionId = parseInt(checkbox.value);
+      let isFaction1 = checkbox.checked;
+      let allianceColorId = isFaction1
+        ? parseInt(alliance1ColorDropdown.value)
+        : parseInt(alliance2ColorDropdown.value);
+      let color = factions.find((fac) => fac.id === allianceColorId).color;
+      values.push({
+        factionId,
+        isFaction1,
+        color,
+      });
+      if (isFaction1) {
+        alliance1FactionsElement.push(factionId);
+      }
+    }
+    // Paint!
+    for (let territory of terrMeta.filter((terr) => terr.lastFaction > 0)) {
+      let color = values.find((val) => val.factionId === territory.lastFaction).color;
+      paintTerritory(territory.refBounds, color);
+    }
+    console.timeEnd("allianceApplyPaint");
+  });
+
+  let removeButton = document.querySelector("#alliance-remove");
+  removeButton.addEventListener("click", (e) => {
+    console.time("allianceRemovePaint");
+    allianceMode = false;
+    updateAllianceModeStatus();
+    // Paint!
+    for (let territory of terrMeta.filter((terr) => terr.lastFaction > 0)) {
+      let color = factions.find((fac) => fac.id === territory.lastFaction).color;
+      paintTerritory(territory.refBounds, color);
+    }
+    console.timeEnd("allianceRemovePaint");
+  });
+
+  return element;
+}
 
 let layerControl = new L.Control.Layers.Custom(baseMaps, overlayMaps, {
   collapsed: true,
@@ -213,6 +333,7 @@ monumentData.forEach((monument) => {
 function paintFactionBaseTerritories() {
   for (let territory of terrMeta) {
     let faction = factions.find((fac) => fac.id === territory.startingFactionId);
+    territory.lastFaction = territory.factionId;
     paintTerritory(territory.refBounds, faction.color);
   }
 }
@@ -238,14 +359,17 @@ async function paintTerritoriesFromLatestState() {
   lastUpdateAttrib = attribText;
   // Paint from data.
   for (let territory of data.results) {
-    let ref = terrMeta.find((terr) => terr.id === territory.territoryId);
+    let ref = terrMeta.find((ter) => ter.id === territory.territoryId);
     let faction = factions.find((fac) => fac.id === territory.factionId);
-    paintTerritory(ref.refBounds, faction.color);
+    let color = faction.color;
+    ref.lastFaction = territory.factionId;
+    paintTerritory(ref.refBounds, color);
   }
+  updateAllianceModePaint();
 }
 
 function timeAgo(date) {
-  return formatDistanceToNowStrict(date, { addSuffix: true, roundingMethod: 'floor' });
+  return formatDistanceToNowStrict(date, { addSuffix: true, roundingMethod: "floor" });
 }
 
 function resetAllTerritoriesPaint() {
@@ -259,8 +383,10 @@ function paintTerritory(ref, color = PAINTER_COLOR_UNCLAIMED) {
 
 function paintAllTerritories(color = PAINTER_COLOR_UNCLAIMED) {
   for (let territory of terrMeta) {
+    territory.lastFaction = colorToFactionId(color);
     paintTerritory(territory.refBounds, color);
   }
+  updateAllianceModePaint();
 }
 
 function paintAllTerritoriesRandomized() {
@@ -270,8 +396,10 @@ function paintAllTerritoriesRandomized() {
   }
   for (let territory of terrMeta) {
     let randomColor = colors[Math.floor(Math.random() * colors.length)];
+    territory.lastFaction = colorToFactionId(randomColor);
     paintTerritory(territory.refBounds, randomColor);
   }
+  updateAllianceModePaint();
 }
 
 function createMonumentMarker(monumentData) {
@@ -282,5 +410,23 @@ function createMonumentMarker(monumentData) {
     .addTo(overlayMonuments);
 }
 
+function updateAllianceModePaint() {
+  let applyButton = document.querySelector("#alliance-apply");
+  let clickEvent = new Event("click");
+  if (allianceMode) {
+    applyButton.dispatchEvent(clickEvent);
+  }
+}
+
+function updateAllianceModeStatus() {
+  let allianceStatusElement = document.querySelector("#alliance-status");
+  allianceStatusElement.textContent = allianceMode ? "ON" : "OFF";
+}
+
+function colorToFactionId(color) {
+  return factions.findIndex((fac) => fac.color === color);
+}
+
 // run once
-paintTerritoriesFromLatestState();
+await paintTerritoriesFromLatestState();
+updateAllianceModeStatus();

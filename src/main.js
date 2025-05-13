@@ -223,6 +223,7 @@ function createAllianceConfigElement() {
   }
   alliance1ColorDropdown.innerHTML = toAddToInnerHtml;
 
+  toAddToInnerHtml = ``;
   for (let faction of factions.filter((faction) => faction.id > 0)) {
     let isDefaultSelected = faction.id === alliance2ColorIndex ? "selected" : "";
     toAddToInnerHtml += `<option value="${faction.id}" ${isDefaultSelected}>${faction.name}</option>`;

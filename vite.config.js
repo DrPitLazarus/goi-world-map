@@ -1,5 +1,5 @@
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import { defineConfig } from 'vite';
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+import { defineConfig } from "vite";
 
 export default defineConfig(() => {
   return {
@@ -8,5 +8,8 @@ export default defineConfig(() => {
         /* pass your config */
       }),
     ],
+    build: {
+      target: "esnext",
+    },
   };
 });

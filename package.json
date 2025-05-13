@@ -23,7 +23,7 @@
     "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",
     "sharp": "^0.33.5",
-    "vite": "^6.0.11",
+    "vite": "^6.3.5",
     "vite-plugin-image-optimizer": "^1.1.8"
   }
 }

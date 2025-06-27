@@ -40,5 +40,21 @@
         <button id="alliance-remove">Remove</button>
       </section>
     </alliance-config>
+    <history-viewer>
+      <label>
+        <input type="checkbox" class="leaflet-control-layers-selector" id="history-viewer-checkbox"/> <span>History Viewer</span>
+      </label>
+      <section class="hidden">
+        <label>Select Dataset:<br>
+          <select id="history-dataset-dropdown">
+            <option value="2025-04-30">2025-04-30 War</option>
+          </select>
+        </label>
+        <label>Select Snapshot:<br><select id="history-snapshot-dropdown"></select></label>
+        <button id="history-load-previous-button">&lt; Previous</button>
+        <button id="history-load-next-button">Next &gt;</button>
+        <label>Press <kbd>,</kbd> for back and <kbd>.</kbd> for forward.</label>
+      </section>
+    </history-viewer>
   </body>
 </html>

@@ -22,7 +22,8 @@ body {
 /* Hide controls before they're moved to the correct place */
 body {
   & > territory-bounds-painter,
-  & > alliance-config {
+  & > alliance-config,
+  & > history-viewer {
     display: none;
   }
 }

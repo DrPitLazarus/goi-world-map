@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { formatDistanceToNowStrict } from "date-fns";
+import { format, formatDistanceToNowStrict } from "date-fns";
 import terrBounds from "./territory_bounds";
 import terrMeta from "./territory_meta";
 import factions from "./factions";
@@ -53,6 +53,12 @@ let allianceMode = true;
 let alliance1Factions = [1, 2, 3];
 let alliance1ColorIndex = 1;
 let alliance2ColorIndex = 6;
+// History Viewer variables:
+let historyViewerEnabled = false;
+let historySnapshotsData = null;
+let historySnapshotDropdown = document.querySelector("#history-snapshot-dropdown");
+let historyKeyPrevious = ",";
+let historyKeyNext = ".";
 
 // add setInteractivity to layer
 // https://github.com/Leaflet/Leaflet/issues/5442#issuecomment-424014428
@@ -135,15 +141,17 @@ let overlayMaps = {
 
 // extend the normal layer control to add territory bounds painter
 L.Control.Layers.Custom = L.Control.Layers.extend({
-  _initLayout: function () {
+  _initLayout: async function () {
     L.Control.Layers.prototype._initLayout.call(this);
     L.DomUtil.create("div", "leaflet-control-layers-separator", this._section);
     let painterElement = createTerritoryBoundsPainterElement();
     let allianceElement = createAllianceConfigElement();
+    let historyViewerElement = await createHistoryViewerElement();
 
     // last step: move the element into the layer control
     this._section.appendChild(painterElement);
     this._section.appendChild(allianceElement);
+    this._section.appendChild(historyViewerElement);
   },
 });
 
@@ -179,7 +187,7 @@ function createTerritoryBoundsPainterElement() {
   painterReset.addEventListener("click", resetAllTerritoriesPaint);
 
   let painterLatestState = document.querySelector("#painter-latest-state");
-  painterLatestState.addEventListener("click", paintTerritoriesFromLatestState);
+  painterLatestState.addEventListener("click", paintTerritoriesFromApi);
 
   let painterPaintAll = document.querySelector("#paint-all");
   painterPaintAll.addEventListener("click", () => {
@@ -282,6 +290,78 @@ function createAllianceConfigElement() {
   return element;
 }
 
+async function createHistoryViewerElement() {
+  let baseApiUrl = "https://goi-library.drpitlazar.us/api/territory-states";
+  let historyViewerDiv = document.querySelector("history-viewer");
+  let historySectionDiv = document.querySelector("history-viewer > section");
+  let historyCheckbox = document.querySelector("#history-viewer-checkbox");
+  historyCheckbox.addEventListener("change", (e) => {
+    historyViewerEnabled = e.target.checked;
+  });
+  let historyLoadPreviousButton = document.querySelector("#history-load-previous-button");
+  let historyLoadNextButton = document.querySelector("#history-load-next-button");
+  historyCheckbox.addEventListener("change", async (e) => {
+    historySectionDiv.classList.toggle("hidden");
+    // On first open, populate the snapshot data dropdown.
+    if (historySnapshotsData == null) {
+      let snapshotDataRequest = await fetch(`${baseApiUrl}?war=2025-04-30&get=sids`);
+      historySnapshotsData = await snapshotDataRequest.json();
+      if (historySnapshotsData.success) {
+        let dropdownOptionsString = ``;
+        for (let option of historySnapshotsData.results) {
+          dropdownOptionsString += `<option value="${option.submissionId}">${
+            option.submissionId
+          }. ${formatDate(option.createdAt)}</option>`;
+        }
+        historySnapshotDropdown.innerHTML = dropdownOptionsString;
+        let changeEvent = new Event("change");
+        historySnapshotDropdown.dispatchEvent(changeEvent);
+      }
+    }
+  });
+
+  historySnapshotDropdown.addEventListener("change", historyLoadSelectedSnapshot);
+
+  function historyLoadSelectedSnapshot() {
+    let submissionId = Number.parseInt(historySnapshotDropdown.value ?? "-1");
+    if (submissionId === -1) return;
+    paintTerritoriesFromApi(`${baseApiUrl}?sid=${submissionId}`);
+  }
+
+  historyLoadPreviousButton.addEventListener("click", historyLoadPreviousSnapshot);
+
+  function historyLoadPreviousSnapshot() {
+    if (historySnapshotDropdown.selectedIndex - 1 >= 0) {
+      historySnapshotDropdown.selectedIndex = historySnapshotDropdown.selectedIndex - 1;
+      let submissionId = Number.parseInt(historySnapshotDropdown.value ?? "-1");
+      if (submissionId === -1) return;
+      paintTerritoriesFromApi(`${baseApiUrl}?sid=${submissionId}`);
+    }
+  }
+
+  historyLoadNextButton.addEventListener("click", historyLoadNextSnapshot);
+
+  function historyLoadNextSnapshot() {
+    if (historySnapshotDropdown.selectedIndex + 1 < historySnapshotDropdown.options.length) {
+      historySnapshotDropdown.selectedIndex = historySnapshotDropdown.selectedIndex + 1;
+      let submissionId = Number.parseInt(historySnapshotDropdown.value ?? "-1");
+      if (submissionId === -1) return;
+      paintTerritoriesFromApi(`${baseApiUrl}?sid=${submissionId}`);
+    }
+  }
+
+  document.body.addEventListener("keyup", (e) => {
+    if (!historyViewerEnabled) return;
+    if (e.key === historyKeyPrevious) {
+      historyLoadPreviousSnapshot();
+    } else if (e.key === historyKeyNext) {
+      historyLoadNextSnapshot();
+    }
+  });
+
+  return historyViewerDiv;
+}
+
 let layerControl = new L.Control.Layers.Custom(baseMaps, overlayMaps, {
   collapsed: true,
   hideSingleBase: true,
@@ -342,20 +422,31 @@ function paintFactionBaseTerritories() {
 let lastUpdate = null;
 let lastUpdateAttrib = "";
 
-async function paintTerritoriesFromLatestState() {
-  // Reset to default color.
-  paintAllTerritories();
-  let response = await fetch("https://goi-library.drpitlazar.us/api/territory-states");
+async function paintTerritoriesFromApi(customApiUrl = null) {
+  let apiUri = "https://goi-library.drpitlazar.us/api/territory-states";
+  if (customApiUrl && typeof customApiUrl === "string") {
+    apiUri = customApiUrl;
+  }
+  // List of all territory IDs. Remove from set when it is painted. Paint remaining with unclaimed.
+  let territoryIds = new Set(terrMeta.map((terr) => terr.id));
+  let response = await fetch(apiUri);
   if (!response.ok) {
     console.error("API response not OK! :(");
     paintFactionBaseTerritories();
     return;
   }
   let data = await response.json();
-  lastUpdate = data.results[0].updatedAt;
+  lastUpdate = data.results[0].createdAt;
   // Update attribution.
   attribution.removeAttribution(lastUpdateAttrib);
-  let attribText = `State updated ${timeAgo(lastUpdate)}`;
+  let attribText = "";
+  if (historyViewerEnabled) {
+    let submissionId = historySnapshotDropdown.value;
+    attribText = `Historic: #${submissionId}. ${formatDate(lastUpdate)}`;
+  } else {
+    attribText = `State updated ${timeAgo(lastUpdate)}`;
+  }
+
   attribution.addAttribution(attribText);
   lastUpdateAttrib = attribText;
   // Paint from data.
@@ -365,8 +456,16 @@ async function paintTerritoriesFromLatestState() {
     let color = faction.color;
     ref.lastFaction = territory.factionId;
     paintTerritory(ref.refBounds, color);
+    territoryIds.delete(ref.id);
+  }
+  for (let unclaimedTerritoryId of territoryIds) {
+    paintTerritory(terrMeta.find((terr) => terr.id === unclaimedTerritoryId).refBounds);
   }
   updateAllianceModePaint();
+}
+
+function formatDate(date) {
+  return format(date, "yyyy-MM-dd HH:mm:ss");
 }
 
 function timeAgo(date) {
@@ -429,5 +528,5 @@ function colorToFactionId(color) {
 }
 
 // run once
-await paintTerritoriesFromLatestState();
+await paintTerritoriesFromApi();
 updateAllianceModeStatus();

@@ -49,7 +49,7 @@ let painterColor = PAINTER_COLOR_UNCLAIMED;
 let painterEnabled = false;
 let painterCycle = true;
 // Default Alliance config:
-let allianceMode = true;
+let allianceMode = false;
 let alliance1Factions = [1, 2, 3];
 let alliance1ColorIndex = 1;
 let alliance2ColorIndex = 6;

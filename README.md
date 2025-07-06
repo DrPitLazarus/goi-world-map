@@ -49,9 +49,5 @@ pnpm dev
 ## Build and Deploy to Vercel
 
 ```
-pnpm build
-
-cd dist
-
 vercel
 ```
